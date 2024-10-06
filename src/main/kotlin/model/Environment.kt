@@ -5,6 +5,7 @@ import java.util.Date
 
 class Environment {
 
+    var currentMilestone = ChapterOrMilestone.CHAPTER1
     var dateTime: Date = Date.from(Instant.now())
     var temperature = Heat.OK
     var hue = Hue.OK

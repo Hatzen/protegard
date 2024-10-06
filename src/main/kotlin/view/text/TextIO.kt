@@ -15,8 +15,12 @@ class TextIO: IView {
         scanner = Scanner(System.`in`)
         showOptions()
         while (true) {
-            val choice = scanner!!.nextLine()
-            handleChoice(choice)
+            val choice = scanner!!.nextLine().lowercase().trim()
+
+            // Split all words except within ""
+            val reg = "\"[^\"]*\"|\\S+"
+            val commandsAndParameters = choice.split(reg)
+            handleChoice(commandsAndParameters)
         }
 
     }
@@ -29,16 +33,16 @@ class TextIO: IView {
         println("The Game begins..")
     }
 
-    private fun handleChoice(choice: String) {
-        when (choice) {
-            // "1" -> explore()
-            // "2" -> talkToCharacter()
-            "3" -> {
-                System.exit(0)
-            }
+    private fun handleChoice(commandsAndParameters: List<String>) {
+        val command = commandsAndParameters.first()
+        val foundCommand = TextCommands.entries.find { it.value.key.lowercase() == command || it.value.shortcut.lowercase() == command }
+        requireNotNull(foundCommand)
+        val parameters = commandsAndParameters.subList(1, commandsAndParameters.size)
+        val properParameterCount = IntRange(foundCommand.value.numberOfIdentifiersMin, foundCommand.value.numberOfIdentifiersMax)
+            .contains(parameters.size)
+        require(!properParameterCount)
 
-            else -> println("Invalid choice. Type a valid choice.")
-        }
+
     }
 
     override fun addDialog(text: String, source: Identifieable) {
