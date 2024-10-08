@@ -4,12 +4,12 @@ import org.example.controller.GameController
 
 enum class TextCommands(val value: TextCommand) {
     // MENU(TextCommand("MENU", "m", TextIO::exit)),
-    EXIT(TextCommand("EXIT", "x", GameController::exit)),
-    HELP(TextCommand("HELP", "h", GameController::exit)),
-    SAVE(TextCommand("SAVE", "s", GameController::exit)),
-    LOAD(TextCommand("LOAD", "l", GameController::exit)),
+    EXIT(TextCommand("EXIT", "x")),
+    HELP(TextCommand("HELP", "h")),
+    SAVE(TextCommand("SAVE", "s")),
+    LOAD(TextCommand("LOAD", "l")),
 
-    GOTO(TextCommand("GOTO", "g", GameController::goto)),
+    GOTO(TextCommand("GOTO", "g")),
     SPEAKTO(TextCommand("SPEAKTO", "s", 1)),
     // TODO: Might need context, useitem on which object, key etc
     USEITEM(TextCommand("USEITEM", "m", 1, 2)),
@@ -30,16 +30,14 @@ enum class TextCommands(val value: TextCommand) {
 
 }
 
-// TODO: create object with name, regex for attributes, shortcuts and Gamecontroler Method Call
 class TextCommand(
     val key: String,
     val shortcut: String,
-    val function: java.util.function.Function<*, *> ,
     val numberOfIdentifiersMin: Int = 0,
     val numberOfIdentifiersMax: Int = 0
 ) {
 
-    constructor(key: String, shortcut: String, function: java.util.function.Function<*, *> , numberOfIdentifiers: Int = 0):
-            this(key, shortcut, function, numberOfIdentifiers, numberOfIdentifiers)
+    constructor(key: String, shortcut: String, numberOfIdentifiers: Int = 0):
+            this(key, shortcut, numberOfIdentifiers, numberOfIdentifiers)
 
 }

@@ -1,20 +1,32 @@
 package org.example.controller
 
-import org.example.model.Character
-import org.example.model.Environment
-import org.example.model.Item
-import org.example.model.RoomConnection
+import model.RoomObject
+import org.example.model.*
 import org.example.model.interfaces.Identifieable
 import org.example.model.scenario.Characters
+import org.example.model.scenario.Items
+import org.example.model.scenario.Rooms
 import kotlin.system.exitProcess
 
 object GameController {
 
+    // val characters = Characters()
+    // val items = Items()
+    // val rooms = Rooms()
+    // val rooms = Rooms()
 
     lateinit var view: IView
 
     // TODO: This usually depends on the room we are currently in..
     lateinit var environment: Environment
+
+    fun init(view: IView) {
+        this.view = view
+        Rooms.init()
+
+        // TODO: save / load
+        Scenario().firstIntro()
+    }
 
     fun goto(connection: RoomConnection, character: Character = Characters.MAIN_CHARACTER) {
         if (connection.canTravel()) {
@@ -26,6 +38,12 @@ object GameController {
         }
     }
 
+    fun startDialog(to: Character, initator: Character = Characters.MAIN_CHARACTER) {
+        to.interact()
+        // TODO: How to get responses etc.
+        to.dialogs
+    }
+
     fun addDialog(text: String, source: Identifieable) {
         view.addDialog(text, source)
     }
@@ -34,11 +52,15 @@ object GameController {
         return Characters.MAIN_CHARACTER.currentRoom.connections
     }
 
+    fun getAllRoomObjects(): List<RoomObject> {
+        return Characters.MAIN_CHARACTER.currentRoom.objects
+    }
+
     fun getInventory(): List<Item> {
         return Characters.MAIN_CHARACTER.inventory
     }
 
-    fun listPeople(): List<Character> {
+    fun getAllPeople(): List<Character> {
         return Characters.MAIN_CHARACTER.currentRoom.people
     }
 

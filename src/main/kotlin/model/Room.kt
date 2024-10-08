@@ -7,10 +7,13 @@ import java.util.function.Predicate
 
 abstract class Room (
     override var name: String,
-    var connections: List<RoomConnection> = listOf(),
-    var people: List<Character> = listOf(),
-    var objects: List<RoomObject> = listOf()
+    var connections: MutableList<RoomConnection> = mutableListOf(),
+    var people: MutableList<Character> = mutableListOf(),
+    var objects: MutableList<RoomObject> = mutableListOf()
 ): Identifieable {
+
+    abstract fun initConnections()
+
     open fun onEnter(character: Character? = null) {
 
     }

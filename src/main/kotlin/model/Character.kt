@@ -7,10 +7,10 @@ import org.example.model.interfaces.Interactable
 open class Character(
     override var name: String,
 
-    var attributes: Attributes,
     var currentRoom: Room,
-    var dialogs: List<Dialog> = listOf(),
-    var inventory: List<Item> = listOf(),
+    var attributes: Attributes = Attributes(),
+    var dialogs: MutableList<Dialog> = mutableListOf(),
+    var inventory: MutableList<Item> = mutableListOf(),
     var alive: Boolean = true
 ): Interactable, Identifieable {
 
@@ -24,4 +24,6 @@ open class Character(
 class Attributes {
     var strength: Int = 0
     var wisdome: Int = 0
+    // TODO: Energy level, walking or switching room costs energy, needs to sleep when 0
+    var currentEnergyLevel = 100
 }

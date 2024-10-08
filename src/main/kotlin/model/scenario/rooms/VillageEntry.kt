@@ -7,15 +7,13 @@ import org.example.model.RoomConnection
 import org.example.model.scenario.Characters
 import org.example.model.scenario.Rooms
 
-val CASTLE_CONNECTION = RoomConnection(Rooms.castleEntry)
 
-class VillageEntry: Room("Village", listOf(CASTLE_CONNECTION)) {
-    var gameStart = true
+class VillageEntry: Room("Village") {
+
+    override fun initConnections() {
+        connections.add(RoomConnection(Rooms.castleEntry))
+    }
 
     override fun onEnter(character: Character?) {
-        if (gameStart) {
-            GameController.addDialog(Characters.NARRATOR.DIALOG_ENTRY, Characters.NARRATOR)
-            gameStart = false
-        }
     }
 }
