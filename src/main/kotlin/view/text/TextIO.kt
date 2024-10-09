@@ -8,6 +8,7 @@ import org.example.controller.IView
 import org.example.model.interfaces.Identifieable
 import org.example.model.scenario.Rooms
 import org.example.view.text.TextCommands.*
+import java.awt.FileDialog.LOAD
 import java.util.*
 
 class TextIO: IView {
@@ -26,9 +27,11 @@ class TextIO: IView {
             try {
                 // Split all words except within ""
                 val reg = "\"[^\"]*\"|\\S+"
-                val commandsAndParameters = choice.split(reg)
+                val commandsAndParameters = Regex(reg).findAll(choice).map { it.value }.toList()
                 handleChoice(commandsAndParameters)
             } catch (ex: IllegalArgumentException) {
+                // TODO: Remove when debugging finished. Overall logging would be nice but is just overhead?
+                ex.printStackTrace()
                 println("Wrong parameters please try again.. Enter h for Help")
             }
         }
@@ -46,7 +49,7 @@ class TextIO: IView {
     private fun handleChoice(commandsAndParameters: List<String>) {
         val command = commandsAndParameters.first()
         val foundCommand = TextCommands.entries.find { it.value.key.lowercase() == command || it.value.shortcut.lowercase() == command }
-        requireNotNull(foundCommand)
+        requireNotNull(foundCommand, { "$command is not a valid command. see h" })
         val parameters = commandsAndParameters.subList(1, commandsAndParameters.size)
         val properParameterCount = IntRange(foundCommand.value.numberOfIdentifiersMin, foundCommand.value.numberOfIdentifiersMax)
             .contains(parameters.size)
@@ -55,8 +58,8 @@ class TextIO: IView {
         when (foundCommand) {
             EXIT -> GameController.exit()
             HELP -> printHelp()
-            SAVE -> TODO()
-            LOAD -> TODO()
+            //SAVE -> TODO()
+            // LOAD -> TODO()
             GOTO -> {
                 val room = GameController.getAllRoomConnections().find { isMatch(it.toRoom, parameters[0]) }
                 requireNotNull(room)

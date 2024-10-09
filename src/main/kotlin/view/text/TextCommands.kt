@@ -6,8 +6,8 @@ enum class TextCommands(val value: TextCommand) {
     // MENU(TextCommand("MENU", "m", TextIO::exit)),
     EXIT(TextCommand("EXIT", "x")),
     HELP(TextCommand("HELP", "h")),
-    SAVE(TextCommand("SAVE", "s")),
-    LOAD(TextCommand("LOAD", "l")),
+    //SAVE(TextCommand("SAVE", "s")),
+    //LOAD(TextCommand("LOAD", "l")),
 
     GOTO(TextCommand("GOTO", "g")),
     SPEAKTO(TextCommand("SPEAKTO", "s", 1)),
