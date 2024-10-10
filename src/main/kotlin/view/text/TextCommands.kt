@@ -9,7 +9,7 @@ enum class TextCommands(val value: TextCommand) {
     //SAVE(TextCommand("SAVE", "s")),
     //LOAD(TextCommand("LOAD", "l")),
 
-    GOTO(TextCommand("GOTO", "g")),
+    GOTO(TextCommand("GOTO", "g", 1)),
     SPEAKTO(TextCommand("SPEAKTO", "s", 1)),
     // TODO: Might need context, useitem on which object, key etc
     USEITEM(TextCommand("USEITEM", "m", 1, 2)),

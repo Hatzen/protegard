@@ -6,28 +6,29 @@ import org.example.controller.GameController.getAllRoomConnections
 import org.example.controller.GameController.getAllRoomObjects
 import org.example.controller.IView
 import org.example.model.interfaces.Identifieable
-import org.example.model.scenario.Rooms
 import org.example.view.text.TextCommands.*
-import java.awt.FileDialog.LOAD
 import java.util.*
 
-class TextIO: IView {
-    private var scanner: Scanner? = null
+class TextIO : IView {
+    private lateinit var scanner: Scanner
 
     // TODO: remove
     private var lastMessage = ""
 
     fun start() {
+        showIntro()
         GameController.init(this)
         scanner = Scanner(System.`in`)
-        showOptions()
         while (true) {
-            val choice = scanner!!.nextLine().lowercase().trim()
+            val choice = scanner.nextLine().lowercase().trim()
 
             try {
                 // Split all words except within ""
                 val reg = "\"[^\"]*\"|\\S+"
                 val commandsAndParameters = Regex(reg).findAll(choice).map { it.value }.toList()
+                if (commandsAndParameters.isEmpty()) {
+                    continue // User pressed enter.
+                }
                 handleChoice(commandsAndParameters)
             } catch (ex: IllegalArgumentException) {
                 // TODO: Remove when debugging finished. Overall logging would be nice but is just overhead?
@@ -39,7 +40,7 @@ class TextIO: IView {
     }
 
 
-    private fun showOptions() {
+    private fun showIntro() {
         println("Type:")
         println("Help or h to show commands")
         println("Exit or x to exit program")
@@ -48,12 +49,15 @@ class TextIO: IView {
 
     private fun handleChoice(commandsAndParameters: List<String>) {
         val command = commandsAndParameters.first()
-        val foundCommand = TextCommands.entries.find { it.value.key.lowercase() == command || it.value.shortcut.lowercase() == command }
+        val foundCommand =
+            TextCommands.entries.find { it.value.key.lowercase() == command || it.value.shortcut.lowercase() == command }
         requireNotNull(foundCommand, { "$command is not a valid command. see h" })
         val parameters = commandsAndParameters.subList(1, commandsAndParameters.size)
-        val properParameterCount = IntRange(foundCommand.value.numberOfIdentifiersMin, foundCommand.value.numberOfIdentifiersMax)
-            .contains(parameters.size)
-        require(properParameterCount)
+        val validParameterCount =
+            IntRange(foundCommand.value.numberOfIdentifiersMin, foundCommand.value.numberOfIdentifiersMax)
+        val actualParameterCount = parameters.size
+        val properParameterCount = validParameterCount.contains(actualParameterCount)
+        require(properParameterCount) { "$actualParameterCount vs $validParameterCount" }
 
         when (foundCommand) {
             EXIT -> GameController.exit()
@@ -61,45 +65,59 @@ class TextIO: IView {
             //SAVE -> TODO()
             // LOAD -> TODO()
             GOTO -> {
-                val room = GameController.getAllRoomConnections().find { isMatch(it.toRoom, parameters[0]) }
-                requireNotNull(room)
+                val room = getAllRoomConnections().find { isMatch(it.toRoom, parameters[0]) }
+                requireNotNull(room) { " the entered room is not reachable or defined." }
                 GameController.goto(room)
             }
+
             SPEAKTO -> {
-                val character = GameController.getAllPeople().find { isMatch(it, parameters[0]) }
+                val character = getAllPeople().find { isMatch(it, parameters[0]) }
                 requireNotNull(character)
                 GameController.startDialog(character)
             }
+
             USEITEM -> {
                 val item = GameController.getInventory().find { isMatch(it, parameters[0]) }
                 requireNotNull(item)
+                // TODO: Move to Gamecontroller call?
                 item.interact()
             }
+
             COMBINEITEM -> {
                 val item1 = GameController.getInventory().find { isMatch(it, parameters[0]) }
                 val item2 = GameController.getInventory().find { isMatch(it, parameters[1]) }
                 requireNotNull(item1)
                 requireNotNull(item2)
+
+                // TODO: Move to Gamecontroller call?
                 // Burn Paper or combine pen with paper
                 item1.combine(item2)
             }
+
             DOACTION -> {
                 // TODO: item on people, like kill them or item on objects, like burn them
             }
+
             LOOKAROUND -> {
                 val list: List<Identifieable> = getAllRoomConnections().map { it.toRoom }
                     .plus(getAllRoomObjects())
                     .plus(getAllPeople())
 
+                // TODO: Move to Gamecontroller call?
+                //   and call getRandomAnswerForLookingAround
                 printIdentifiables(list)
             }
+
             LISTITEMS -> {
                 printIdentifiables(GameController.getInventory())
             }
+
             LISTCONNECTIONS ->
-                printIdentifiables(GameController.getAllRoomConnections().map { it.toRoom })
+                printIdentifiables(getAllRoomConnections().map { it.toRoom })
+
             LISTPEOPLE ->
-                printIdentifiables(GameController.getAllPeople())
+                printIdentifiables(getAllPeople())
+
             LISTACTIONS -> TODO()
         }
     }
@@ -109,8 +127,8 @@ class TextIO: IView {
     }
 
     private fun printHelp() {
-        for(x in TextCommands.entries) {
-            println("Command " + x.value.key + " shortcut " + x.value.shortcut + " minParameter " + x.value.numberOfIdentifiersMin  + " maxParameter " + x.value.numberOfIdentifiersMax)
+        for (x in TextCommands.entries) {
+            println("Command " + x.value.key + " shortcut " + x.value.shortcut + " minParameter " + x.value.numberOfIdentifiersMin + " maxParameter " + x.value.numberOfIdentifiersMax)
         }
     }
 
@@ -119,8 +137,23 @@ class TextIO: IView {
         println(list.map { it.name }.joinToString { "$it, " })
     }
 
-    override fun addDialog(text: String, source: Identifieable) {
-        print(source.name + ": " + text)
+    override fun addText(text: String, source: Identifieable) {
+        println(source.name + ": " + text)
+    }
+
+    override fun addText(text: String) {
+        println(text)
+    }
+
+
+    override fun getChoice(): Int {
+        do {
+            try {
+                return scanner.nextInt()
+            } catch (ex: NoSuchElementException) {
+                println("Not a valid choice, please type just the number.")
+            }
+        } while (true)
     }
 
     private fun print(text: String) {

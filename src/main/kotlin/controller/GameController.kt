@@ -1,15 +1,16 @@
 package org.example.controller
 
 import model.RoomObject
+import org.example.controller.generative.RandomAnswerController
 import org.example.model.*
 import org.example.model.interfaces.Identifieable
 import org.example.model.scenario.Characters
-import org.example.model.scenario.Items
 import org.example.model.scenario.Rooms
 import kotlin.system.exitProcess
 
 object GameController {
 
+    // TODO: Remove or even better get rid of singletons and instanciate (leading to constructor problems, DI?)
     // val characters = Characters()
     // val items = Items()
     // val rooms = Rooms()
@@ -40,12 +41,17 @@ object GameController {
 
     fun startDialog(to: Character, initator: Character = Characters.MAIN_CHARACTER) {
         to.interact()
-        // TODO: How to get responses etc.
-        to.dialogs
+        val dialog = to.dialogs
+        if (dialog == null) {
+            val answer = RandomAnswerController.getRandomAnswerForPeopleWithoutDialog(to)
+            addDialog(answer, to)
+            return
+        }
+        DialogController(dialog, view)
     }
 
     fun addDialog(text: String, source: Identifieable) {
-        view.addDialog(text, source)
+        view.addText(text, source)
     }
 
     fun getAllRoomConnections(): List<RoomConnection> {
@@ -72,8 +78,8 @@ object GameController {
     fun save() {
 
     }
-    fun load() {}
 
+    fun load() {}
 
 
 }
