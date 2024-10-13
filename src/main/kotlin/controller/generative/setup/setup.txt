@@ -1,0 +1,26 @@
+
+PS C:\Users\kaiha> winget install --id=Ollama.Ollama  -e
+Gefunden Ollama [Ollama.Ollama] Version 0.3.12
+Diese Anwendung wird von ihrem Besitzer an Sie lizenziert.
+Microsoft ist nicht verantwortlich und erteilt keine Lizenzen für Pakete von Drittanbietern.
+Download läuft https://github.com/ollama/ollama/releases/download/v0.3.12/OllamaSetup.exe
+  ██████████████████████████████   663 MB /  663 MB
+Der Installer-Hash wurde erfolgreich überprüft
+Paketinstallation wird gestartet...
+Erfolgreich installiert
+PS C:\Users\kaiha> ollama run llama3.2
+pulling manifest
+pulling dde5aa3fc5ff... 100% ▕████████████████████████████████████████████████████████▏ 2.0 GB
+pulling 966de95ca8a6... 100% ▕████████████████████████████████████████████████████████▏ 1.4 KB
+pulling fcc5a6bec9da... 100% ▕████████████████████████████████████████████████████████▏ 7.7 KB
+pulling a70ff7e570d9... 100% ▕████████████████████████████████████████████████████████▏ 6.0 KB
+pulling 56bb8bd477a5... 100% ▕████████████████████████████████████████████████████████▏   96 B
+pulling 34bb5ab01051... 100% ▕████████████████████████████████████████████████████████▏  561 B
+verifying sha256 digest
+writing manifest
+success
+>>> Send a message (/? for help)
+
+
+
+TODO: how to check whether it was a success?
