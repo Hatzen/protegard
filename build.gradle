@@ -13,19 +13,12 @@ dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
 
     implementation "org.apache.logging.log4j:log4j-slf4j-impl:2.17.1"
-    // implementation 'ai.djl.api:api:0.21.0'
-    // implementation 'ai.djl.huggingface:huggingface-model-zoo:0.21.0'
-    // implementation 'ai.djl.pytorch:pytorch-engine:0.21.0'
+    runtimeOnly "org.slf4j:slf4j-log4j12:2.0.16"
 
 
-    implementation platform("ai.djl:bom:0.21.0")
-    implementation "ai.djl:api"
-    runtimeOnly "ai.djl.pytorch:pytorch-engine"
-    runtimeOnly "ai.djl.pytorch:pytorch-model-zoo"
-
-    // implementation 'ai.djl.api:api:0.30.0'
-    // implementation 'ai.djl.huggingface:huggingface-model-zoo:0.30.0'
-    // implementation 'ai.djl.pytorch:pytorch-engine:0.30.0'
+    implementation 'dev.langchain4j:langchain4j-open-ai:0.35.0'
+    implementation 'dev.langchain4j:langchain4j-ollama:0.35.0'
+    implementation 'dev.langchain4j:langchain4j:0.35.0'
 }
 
 test {
@@ -33,41 +26,4 @@ test {
 }
 kotlin {
     jvmToolchain(11)
-}
-
-
-task downloadGpt2Model {
-    doLast {
-        def modelDir = file('src/main/resources/models/gpt2-large')
-        modelDir.mkdirs()
-
-        def modelFiles = [
-                'pytorch_model.bin',
-                'config.json',
-                'merges.txt',
-                'vocab.json'
-        ]
-
-        def modelUrls = [
-                'https://huggingface.co/gpt2-large/resolve/main/pytorch_model.bin',
-                'https://huggingface.co/gpt2-large/resolve/main/config.json',
-                'https://huggingface.co/gpt2-large/resolve/main/merges.txt',
-                'https://huggingface.co/gpt2-large/resolve/main/vocab.json'
-        ]
-
-        modelFiles.eachWithIndex { fileName, index ->
-            def url = new URL(modelUrls[index])
-            def targetFile = new File(modelDir, fileName)
-            if (!targetFile.exists()) {
-                println "Downloading ${url} to ${targetFile.absolutePath}"
-                targetFile.withOutputStream { out ->
-                    url.openStream().withStream { inp ->
-                        inp.transferTo(out)
-                    }
-                }
-            } else {
-                println "File ${targetFile.absolutePath} already exists. Skipping download."
-            }
-        }
-    }
 }
