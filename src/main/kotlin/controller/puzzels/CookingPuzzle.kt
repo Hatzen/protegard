@@ -2,6 +2,7 @@ package controller.puzzels
 
 import java.util.*
 
+// TODO: Build proper api, translate options.
 object CookingPuzzle {
     // Liste der verfügbaren Zutaten
     private val INGREDIENTS: List<String> = mutableListOf(

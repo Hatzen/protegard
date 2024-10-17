@@ -1,4 +1,4 @@
-package controller.puzzels.test
+package org.example.controller.puzzels
 
 import java.awt.BorderLayout
 import java.awt.Dimension
@@ -14,6 +14,7 @@ import javax.swing.JFrame
 import javax.swing.JOptionPane
 import javax.swing.JPanel
 
+// TODO: Setup properly
 class ImageReconstruction : JFrame("Image Reconstruction") {
     private val filenameList: MutableList<String> = ArrayList()
     private val gridSize = 10

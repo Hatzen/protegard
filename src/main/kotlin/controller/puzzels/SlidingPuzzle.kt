@@ -1,158 +1,180 @@
-package controller.puzzels
+package org.example.controller.puzzels
 
-import java.awt.Dimension
-import java.awt.GridLayout
-import java.awt.event.ActionEvent
-import java.awt.event.ActionListener
-import java.awt.image.BufferedImage
-import java.io.File
-import java.util.*
-import javax.imageio.ImageIO
-import javax.swing.ImageIcon
-import javax.swing.JButton
-import javax.swing.JFrame
-import javax.swing.Timer
-import kotlin.math.abs
+import javafx.application.Application
+import javafx.geometry.Pos
+import javafx.scene.Scene
+import javafx.scene.control.Alert
+import javafx.scene.control.Alert.AlertType
+import javafx.scene.control.Button
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
+import javafx.scene.image.WritableImage
+import javafx.scene.layout.GridPane
+import javafx.stage.FileChooser
+import javafx.stage.Stage
+import kotlin.random.Random
 
-class SlidingPuzzle(image: BufferedImage, private val rows: Int, private val cols: Int) : JFrame() {
-    private val tileSize = image.width / cols
-    private val tiles: Array<Array<Tile?>>
-    private var emptyTile: Tile? = null
+// TODO: Proper API. Proper shuffle (make random movements instead of shuffle). Fix winning with 1 place behind
+class SlidingPuzzle : Application() {
+    private lateinit var buttons: Array<Array<Button>>
+    private lateinit var originalImage: Image
+    private var emptyRow = 0
+    private var emptyCol = 0
+    private val rows = 2 // Statisch auf 2 Zeilen setzen
+    private val cols = 2 // Statisch auf 2 Spalten setzen
+    private val tileSize = 100 // Größe der Kacheln in Pixel
 
-    init {
-        this.tiles = Array(rows) { arrayOfNulls(cols) }
+    override fun start(primaryStage: Stage) {
+        val fileChooser = FileChooser()
+        fileChooser.extensionFilters.add(FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.jpeg", "*.png"))
 
-        title = "Sliding Puzzle"
-        setSize(cols * tileSize, rows * tileSize)
-        defaultCloseOperation = EXIT_ON_CLOSE
-        layout = GridLayout(rows, cols)
+        val file = fileChooser.showOpenDialog(primaryStage) ?: return
+        originalImage = Image(file.toURI().toString())
+
+        buttons = Array(rows) { Array(cols) { Button() } }
+
+        val grid = GridPane()
+        grid.alignment = Pos.CENTER
+        grid.hgap = 2.0
+        grid.vgap = 2.0
 
         // Initialisiere die Kacheln
-        initializeTiles(image)
+        initializeTiles(grid)
+        shuffleTiles() // Mische die Kacheln
 
-        // Mische die Kacheln
-        shuffleTiles()
-
-        // Füge die Kacheln zum JFrame hinzu
-        for (i in 0 until rows) {
-            for (j in 0 until cols) {
-                add(tiles[i][j])
-            }
-        }
-
-        isVisible = true
+        val scene =
+            Scene(grid, (cols * tileSize + 2 * grid.hgap).toDouble(), (rows * tileSize + 2 * grid.vgap).toDouble())
+        primaryStage.title = "Sliding Puzzle"
+        primaryStage.scene = scene
+        primaryStage.show()
     }
 
-    private fun initializeTiles(image: BufferedImage) {
+    private fun initializeTiles(grid: GridPane) {
         var tileIndex = 0
+
         for (i in 0 until rows) {
             for (j in 0 until cols) {
-                // Erstelle Kacheln mit Teilbildern
-                val tileImage = image.getSubimage(j * tileSize, i * tileSize, tileSize, tileSize)
-                tiles[i][j] = Tile(tileImage, i, j, tileIndex++)
-                tiles[i][j]!!.addActionListener(TileClickListener(i, j))
+                val button = Button()
+                button.setPrefSize(tileSize.toDouble(), tileSize.toDouble())
+                button.setOnAction {
+                    if (moveTile(i, j)) {
+                        checkForWin() // Überprüfe nach jedem Zug, ob das Puzzle gelöst ist
+                    }
+                }
+                buttons[i][j] = button
+                grid.add(button, j, i)
+
+                // Setze die Grafik der Kacheln
+                if (tileIndex < cols * rows - 1) { // Letzte Kachel bleibt leer
+                    button.graphic = createTileImage(tileIndex)
+                    button.text = (tileIndex + 1).toString() // Zeige die Kachelnummer
+                } else {
+                    button.graphic = null // Setze auf leer
+                    button.text = "" // Kachel bleibt leer
+                }
+                tileIndex++
             }
         }
-        // Leere Kachel
-        emptyTile = tiles[rows - 1][cols - 1] // Die letzte Kachel ist leer
-        emptyTile?.isEmpty = (true)
+
+        // Setze die Position der leeren Kachel
+        emptyRow = rows - 1
+        emptyCol = cols - 1
+    }
+
+    private fun createTileImage(tileNumber: Int): ImageView {
+        val colIndex = (tileNumber % cols)
+        val rowIndex = (tileNumber / cols)
+
+        // Berechne die richtigen Pixelkoordinaten für die Kachel im Originalbild
+        val tileImage = WritableImage(
+            originalImage.pixelReader,
+            colIndex * (originalImage.width.toInt() / cols),
+            rowIndex * (originalImage.height.toInt() / rows),
+            originalImage.width.toInt() / cols,
+            originalImage.height.toInt() / rows
+        )
+        val imageView = ImageView(tileImage)
+        imageView.fitWidth = tileSize.toDouble()
+        imageView.fitHeight = tileSize.toDouble()
+        imageView.isPreserveRatio = true
+
+        return imageView
+    }
+
+    private fun moveTile(row: Int, col: Int): Boolean {
+        if ((row == emptyRow && (col == emptyCol - 1 || col == emptyCol + 1)) ||
+            (col == emptyCol && (row == emptyRow - 1 || row == emptyRow + 1))
+        ) {
+            // Bewege die Kachel
+            buttons[emptyRow][emptyCol].graphic = buttons[row][col].graphic
+            buttons[emptyRow][emptyCol].text = buttons[row][col].text
+            buttons[row][col].graphic = null
+            buttons[row][col].text = ""
+
+            // Aktualisiere die leere Kachel
+            emptyRow = row
+            emptyCol = col
+            return true
+        }
+        return false
     }
 
     private fun shuffleTiles() {
-        val tileList = ArrayList<Tile?>()
-        for (i in 0 until rows) {
-            tileList.addAll(Arrays.asList(*tiles[i]).subList(0, cols))
-        }
-        Collections.shuffle(tileList)
+        val totalTiles = rows * cols
+        val indices = (0 until totalTiles - 1).toMutableList() // Letzte Kachel bleibt leer
+        indices.shuffle(Random(System.nanoTime()))
 
-        // Setze die Kacheln nach dem Mischen wieder in die Matrix
+        // Füge die leere Kachel (letzte Position)
+        indices.add(totalTiles - 1)
+
+        // Mische die Kacheln und lege die leere Kachel am Ende
+        var tileIndex = 0
         for (i in 0 until rows) {
             for (j in 0 until cols) {
-                tiles[i][j] = tileList[i * cols + j]
-                tiles[i][j]!!.setPosition(i, j)
-            }
-        }
-        emptyTile = tiles[rows - 1][cols - 1] // Die letzte Kachel ist leer
-        emptyTile?.isEmpty = (true)
-    }
-
-    private inner class Tile(private val image: BufferedImage, var row: Int, var col: Int, index: Int) : JButton() {
-        var isEmpty: Boolean = false
-            set(isEmpty) {
-                field = isEmpty
-                isVisible = !isEmpty // Leere Kachel unsichtbar machen
-            }
-
-        init {
-            icon = ImageIcon(image)
-        }
-
-        fun setPosition(row: Int, col: Int) {
-            this.row = row
-            this.col = col
-        }
-
-        fun moveTo(target: Tile?) {
-            // Animationslogik hier
-            val targetRow = target!!.row
-            val targetCol = target.col
-            val originalLocation = location
-            val targetLocation = target.location
-
-            // Animation
-            val timer = Timer(20, null)
-            timer.addActionListener(object : ActionListener {
-                private val steps = 10
-                private var step = 0
-
-                override fun actionPerformed(e: ActionEvent) {
-                    if (step < steps) {
-                        val x = originalLocation.x + (targetLocation.x - originalLocation.x) * step / steps
-                        val y = originalLocation.y + (targetLocation.y - originalLocation.y) * step / steps
-                        setLocation(x, y)
-                        step++
-                    } else {
-                        location = targetLocation
-                        target.isEmpty = (true)
-                        emptyTile?.isEmpty = (false)
-                        timer.stop()
-                    }
+                val tileNum = indices[tileIndex]
+                if (tileNum < totalTiles - 1) { // Letzte Kachel bleibt leer
+                    buttons[i][j].graphic = createTileImage(tileNum)
+                    buttons[i][j].text = (tileNum + 1).toString() // Zeige die Kachelnummer
+                } else {
+                    buttons[i][j].graphic = null // Setze auf leer
+                    buttons[i][j].text = "" // Kachel bleibt leer
                 }
-            })
-            timer.start()
-        }
-
-        override fun getPreferredSize(): Dimension {
-            return Dimension(tileSize, tileSize)
-        }
-    }
-
-    private inner class TileClickListener(private val row: Int, private val col: Int) : ActionListener {
-        override fun actionPerformed(e: ActionEvent) {
-            // Überprüfen, ob die Kachel benachbart zur leeren Kachel ist
-            if ((abs((row - emptyTile!!.row).toDouble()) == 1.0 && col == emptyTile!!.col) ||
-                (abs((col - emptyTile!!.col).toDouble()) == 1.0 && row == emptyTile!!.row)
-            ) {
-                tiles[row][col]!!.moveTo(emptyTile)
-                emptyTile?.isEmpty = (false)
-                emptyTile = tiles[row][col] // Update die leere Kachel
+                tileIndex++
             }
         }
+
+        // Setze die Position der leeren Kachel
+        emptyRow = rows - 1
+        emptyCol = cols - 1
     }
 
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            try {
-                // Bild laden
-                val image =
-                    ImageIO.read(File("C:\\Users\\kaiha\\Desktop\\projects\\Protegard\\images\\a3277423-7433-4489-95f9-688643801708.jpg")) // Setze den Pfad zu deinem Bild
-                val rows = 4 // Anzahl der Zeilen
-                val cols = 4 // Anzahl der Spalten
-                SlidingPuzzle(image, rows, cols)
-            } catch (e: Exception) {
-                e.printStackTrace()
+    private fun checkForWin() {
+        // TODO: gelöst 1 zu früh
+        var expectedTile = 1
+
+        for (i in 0 until rows) {
+            for (j in 0 until cols) {
+                if (i == emptyRow && j == emptyCol) continue // Leere Kachel ignorieren
+                if (buttons[i][j].text.toIntOrNull() != expectedTile) {
+                    return // Wenn nicht alle Kacheln in der richtigen Reihenfolge sind
+                }
+                expectedTile++
             }
         }
+
+        // Wenn das Puzzle gelöst ist, zeige einen Dialog an
+        showWinDialog()
     }
+
+    private fun showWinDialog() {
+        val alert = Alert(AlertType.INFORMATION)
+        alert.title = "Puzzle Gelöst!"
+        alert.headerText = null
+        alert.contentText = "Herzlichen Glückwunsch! Du hast das Puzzle erfolgreich gelöst!"
+        alert.showAndWait()
+    }
+}
+
+fun main() {
+    Application.launch(SlidingPuzzle::class.java)
 }
