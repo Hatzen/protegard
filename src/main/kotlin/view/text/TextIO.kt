@@ -3,7 +3,7 @@ package org.example.view.text
 import org.example.controller.GameController
 import org.example.controller.GameController.getAllPeople
 import org.example.controller.GameController.getAllRoomConnections
-import org.example.controller.GameController.getAllRoomObjects
+import org.example.controller.GameController.lookAround
 import org.example.controller.IView
 import org.example.model.interfaces.Identifieable
 import org.example.view.text.TextCommands.*
@@ -99,12 +99,8 @@ class TextIO : IView {
             }
 
             LOOKAROUND -> {
-                val list: List<Identifieable> = getAllRoomConnections().map { it.toRoom }
-                    .plus(getAllRoomObjects())
-                    .plus(getAllPeople())
+                val list: List<Identifieable> = lookAround()
 
-                // TODO: Move to Gamecontroller call?
-                //   and call getRandomAnswerForLookingAround
                 printIdentifiables(list)
             }
 

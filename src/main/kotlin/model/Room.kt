@@ -2,17 +2,16 @@ package org.example.model
 
 import model.RoomObject
 import org.example.model.interfaces.Identifieable
-import org.example.model.scenario.Characters
-import java.util.function.Predicate
 
-abstract class Room (
+abstract class Room(
     override var name: String,
     var connections: MutableList<RoomConnection> = mutableListOf(),
     var people: MutableList<Character> = mutableListOf(),
     var objects: MutableList<RoomObject> = mutableListOf()
-): Identifieable {
+) : Identifieable {
 
     abstract fun initConnections()
+    abstract fun initRoomObjects()
 
     open fun onEnter(character: Character? = null) {
 
@@ -21,9 +20,12 @@ abstract class Room (
     open fun onLeave() {
 
     }
+
+    open fun canLeave() = true
 }
 
-class RoomConnection(val toRoom: Room, val travelMessage: () -> String? = { null }) {
+class RoomConnection(override val name: String, val toRoom: Room, val travelMessage: () -> String? = { null }) :
+    Identifieable {
     fun canTravel(): Boolean {
         return travelMessage != null
     }

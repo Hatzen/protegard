@@ -1,11 +1,14 @@
 package org.example.model
 
+import org.example.model.milestones.Chapter
+import org.example.model.milestones.Milestone
 import java.time.Instant
-import java.util.Date
+import java.util.*
 
 class Environment {
 
-    var currentMilestone = ChapterOrMilestone.CHAPTER1
+    var currentChapter = Chapter.CHAPTER1
+    var currentMilestone: List<Milestone> = mutableListOf()
     var dateTime: Date = Date.from(Instant.now())
     var temperature = Heat.OK
     var hue = Hue.OK

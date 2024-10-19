@@ -2,6 +2,7 @@ package org.example.controller
 
 import model.RoomObject
 import org.example.controller.generative.RandomAnswerController
+import org.example.controller.generative.setup.SetupHelper
 import org.example.model.*
 import org.example.model.interfaces.Identifieable
 import org.example.model.scenario.Characters
@@ -23,6 +24,7 @@ object GameController {
 
     fun init(view: IView) {
         this.view = view
+        SetupHelper().startOlama()
         Rooms.init()
 
         // TODO: save / load
@@ -30,6 +32,9 @@ object GameController {
     }
 
     fun goto(connection: RoomConnection, character: Character = Characters.MAIN_CHARACTER) {
+        if (!Characters.MAIN_CHARACTER.currentRoom.canLeave()) {
+            return
+        }
         if (connection.canTravel()) {
             character.currentRoom = connection.toRoom
             connection.toRoom.onEnter(character)
@@ -55,19 +60,28 @@ object GameController {
     }
 
     fun getAllRoomConnections(): List<RoomConnection> {
-        return Characters.MAIN_CHARACTER.currentRoom.connections
+        return Characters.MAIN_CHARACTER.currentRoom.connections.filter { it.preconditionToIdentify() }
     }
 
     fun getAllRoomObjects(): List<RoomObject> {
-        return Characters.MAIN_CHARACTER.currentRoom.objects
+        return Characters.MAIN_CHARACTER.currentRoom.objects.filter { it.preconditionToIdentify() }
     }
 
     fun getInventory(): List<Item> {
-        return Characters.MAIN_CHARACTER.inventory
+        return Characters.MAIN_CHARACTER.inventory.filter { it.preconditionToIdentify() }
     }
 
     fun getAllPeople(): List<Character> {
-        return Characters.MAIN_CHARACTER.currentRoom.people
+        return Characters.MAIN_CHARACTER.currentRoom.people.filter { it.preconditionToIdentify() }
+    }
+
+    fun lookAround(): List<Identifieable> {
+        val list: List<Identifieable> = getAllRoomConnections().map { it.toRoom }
+            .plus(getAllRoomObjects())
+            .plus(getAllPeople())
+            .filter { it.preconditionToIdentify() }
+
+        return list
     }
 
     fun exit() {
