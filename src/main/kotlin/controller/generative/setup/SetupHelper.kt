@@ -79,13 +79,14 @@ class SetupHelper {
     // Start the Ollama server with llama3.2
     fun startOllamaServer() {
         // val command = listOf(COMMAND, "serve")
-        // TODO: Remove. Obviously loaded via rest already.
+        // TODO: Remove. Obviously loaded via rest already. And these calls would block
         // val command = listOf(COMMAND, "run", "llama3.2")
         // runCommand(command)?.let { println(it) }
         // val command2 = listOf(COMMAND, "run", "llama3.2")
         // runCommand(command2)?.let { println(it) }
+
         // Get test response to start model without blocking process.
-        ChatGPTAdventure().getDynamicResponse("Do nothing but give me .")
+        ChatGPTAdventure().getDynamicResponse("Answer to test")
     }
 
     // Check server health by running `ollama ps` and looking for llama3.2
@@ -97,6 +98,8 @@ class SetupHelper {
     // Helper function to run shell commands
     fun runCommand(command: List<String>): String? {
         return try {
+            // TODO: debug only..
+            println("Command run: $command")
             val process = ProcessBuilder(command)
                 .redirectErrorStream(true)
                 .start()

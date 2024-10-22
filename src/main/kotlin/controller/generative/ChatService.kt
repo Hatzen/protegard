@@ -37,13 +37,25 @@ class ChatService : UserStreamCommunication, ModelCommunication {
 
     // Could you give me the way to exercise for office worker, please?
     // Based on previous answer, What if I don't have much place outside?
-    override fun ask(userPrompt: String): CompletableFuture<Void> {
+    override fun ask(userPrompt: String): CompletableFuture<String> {
         val tokenStream = chatWithModel(userPrompt)
-        val future = CompletableFuture<Void>()
+        val future = CompletableFuture<String>()
+
+        /*
+        // use streamed response or show loading progress..
         tokenStream.onNext(System.out::print)
             .onComplete {
                 System.out.println()
                 future.complete(null)
+            }
+            .onError(Throwable::printStackTrace)
+            .start()
+         */
+        tokenStream
+            .onNext(System.out::print)
+            .onComplete {
+                val response = it.content().text()
+                future.complete(response)
             }
             .onError(Throwable::printStackTrace)
             .start()

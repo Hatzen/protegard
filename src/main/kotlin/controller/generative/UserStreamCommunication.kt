@@ -4,6 +4,6 @@ import java.util.concurrent.CompletableFuture
 
 interface UserStreamCommunication {
 
-    fun ask(userPrompt: String): CompletableFuture<Void>
+    fun ask(userPrompt: String): CompletableFuture<String>
 
 }

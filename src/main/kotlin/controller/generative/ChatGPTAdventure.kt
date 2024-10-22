@@ -26,11 +26,8 @@ class ChatGPTAdventure {
 
         @Throws(Exception::class)
         private fun getGPTResponse(prompt: String): String {
-
             val chatService = ChatService(API_URL, "llama3.2")
-            chatService.ask(prompt).join()
-            // TODO: fetch and move
-            return ""
+            return chatService.ask(prompt).join()
         }
     }
 }
