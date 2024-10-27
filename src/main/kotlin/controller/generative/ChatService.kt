@@ -18,7 +18,7 @@ class ChatService : UserStreamCommunication, ModelCommunication {
         this.languageModel = connectModel(modelUrl, modelName)
         // TODO: We should set some context for "ever" and avoid manipulating the memory for dummy responses.
         // Memorize for 100 messages continuously
-        val chatMemory = MessageWindowChatMemory.withMaxMessages(100)
+        val chatMemory = MessageWindowChatMemory.withMaxMessages(3)
         this.assistant = AiServices.builder(ModelCommunication::class.java)
             // Alternative of .chatLanguageModel() which support streaming response
             .streamingChatLanguageModel(this.languageModel)
@@ -30,8 +30,13 @@ class ChatService : UserStreamCommunication, ModelCommunication {
         return OllamaStreamingChatModel.builder()
             .baseUrl(modelUrl)
             .modelName(modelName)
-            .timeout(Duration.ofHours(1))
-            .temperature(1.0)
+            .timeout(Duration.ofSeconds(1000))
+            .temperature(0.5)
+            // TODO: Evaluate proper values. Maybe use different instances for different usecases.
+            // .topP(1.0)
+            // .topK(1000)
+            // .numPredict(1000)
+            // .numCtx(1000)
             .build()
     }
 
@@ -41,18 +46,9 @@ class ChatService : UserStreamCommunication, ModelCommunication {
         val tokenStream = chatWithModel(userPrompt)
         val future = CompletableFuture<String>()
 
-        /*
-        // use streamed response or show loading progress..
-        tokenStream.onNext(System.out::print)
-            .onComplete {
-                System.out.println()
-                future.complete(null)
-            }
-            .onError(Throwable::printStackTrace)
-            .start()
-         */
         tokenStream
-            .onNext(System.out::print)
+            //.onNext(System.out::println)
+            .onNext {}
             .onComplete {
                 val response = it.content().text()
                 future.complete(response)
