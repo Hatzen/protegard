@@ -20,6 +20,10 @@ class SetupHelper {
         Runtime.getRuntime().addShutdownHook(Thread {
             println("Shutting down Ollama server...")
             runCommand(listOf(COMMAND, "stop", MODEL))
+
+            // TODO: server still needs to be killed:
+            // https://github.com/ollama/ollama/issues/690#issuecomment-1998454215
+            // Get-Process | Where-Object {$_.ProcessName -like '*ollama*'} | Stop-Process
         })
 
         setEnvironmentVariables()
@@ -78,12 +82,13 @@ class SetupHelper {
 
     // Start the Ollama server with llama3.2
     fun startOllamaServer() {
-        // val command = listOf(COMMAND, "serve")
-        // TODO: Remove. Obviously loaded via rest already. And these calls would block
-        // val command = listOf(COMMAND, "run", "llama3.2")
-        // runCommand(command)?.let { println(it) }
-        // val command2 = listOf(COMMAND, "run", "llama3.2")
-        // runCommand(command2)?.let { println(it) }
+        // TODO: Do in background
+        // Needed otherwise run ollama will lead to Error:
+        // Head "http://127.0.0.1:11434/": dial tcp 127.0.0.1:11434: connectex: Connection refused
+        Thread {
+            val command = listOf(COMMAND, "serve")
+            runCommand(command)?.let { println(it) }
+        }
 
         // Get test response to start model without blocking process.
         ChatGPTAdventure().getDynamicResponse("Answer to test")
