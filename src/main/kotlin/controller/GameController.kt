@@ -7,6 +7,7 @@ import org.example.model.*
 import org.example.model.interfaces.Identifieable
 import org.example.model.scenario.Characters
 import org.example.model.scenario.Rooms
+import org.example.view.text.TextIO
 import kotlin.system.exitProcess
 
 object GameController {
@@ -22,10 +23,12 @@ object GameController {
     // TODO: This usually depends on the room we are currently in..
     lateinit var environment: Environment
 
-    fun init(view: IView) {
-        this.view = view
+    fun init() {
         SetupHelper().startOlama()
         Rooms.init()
+
+        this.view = TextIO()
+        view.start()
 
         // TODO: save / load
         Scenario().firstIntro()

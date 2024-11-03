@@ -1,36 +1,57 @@
 package org.example.controller.generative
 
 import controller.generative.ChatService
+import org.example.controller.generative.setup.SetupHelper
+import org.example.model.Environment
+import org.example.model.settings.Settings
+import java.util.concurrent.CompletableFuture
 
-class ChatGPTAdventure {
+class ChatGPTAdventure(private val settings: Settings, private val environment: Environment) {
 
     companion object {
         const val API_URL: String = "http://localhost:11434"
+        const val MODEL = "llama3.2"
         const val STATIC_NO_LLM_ANSWER = "The cake is a lie.."
+    }
 
-        // TODO: set by user input or wether olama already installed
-        private val USE_LLMS: Boolean = true
+    private val chatService: ChatService?
 
-        @Throws(Exception::class)
-        private fun getGPTResponse(prompt: String): String {
-            val chatService = ChatService(API_URL, "llama3.2")
-            return chatService.ask(prompt).join()
+    init {
+        chatService = if (SetupHelper.isOllamaInstalled) {
+            ChatService(API_URL, MODEL)
+        } else {
+            null
         }
     }
 
-    /**
-     *
-     * @param context
-     * @return
-     * @throws Exception
-     */
-    @Throws(Exception::class)
-    fun getDynamicResponse(context: String): String {
-        if (!USE_LLMS) {
+    fun getNarratorBasedContent(
+        message: String,
+        language: String = settings.language,
+        chapter: String = environment.currentChapter.getChaptersUntilThis().joinToString { it.chapterContent }
+    ): String {
+        return getDynamicResponse { chatService!!.getNarratorBasedContent(message, language, chapter) }
+    }
+
+    fun generateStoryIndependentStuff(
+        message: String,
+        language: String = settings.language,
+    ): String {
+        return getDynamicResponse { chatService!!.generateStoryIndependentStuff(message, language) }
+    }
+
+    fun translate(
+        message: String,
+        languageTo: String = settings.language,
+        languageFrom: String = Settings.DEFAULT_LANGUAGE
+    ): String {
+        return getDynamicResponse { chatService!!.translate(message, languageTo, languageFrom) }
+    }
+
+    private fun getDynamicResponse(supp: () -> CompletableFuture<String>): String {
+        if (!settings.useLLMs) {
             return STATIC_NO_LLM_ANSWER
         }
-        val response = getGPTResponse(context)
+        val response = supp().join()
         return response
     }
-
 }

@@ -1,17 +1,36 @@
 package org.example.controller.generative.setup
 
-import org.example.controller.generative.ChatGPTAdventure
+import controller.generative.ChatService
+import org.example.controller.generative.ChatGPTAdventure.Companion.API_URL
+import org.example.controller.generative.ChatGPTAdventure.Companion.MODEL
+import org.example.model.settings.Settings
 import java.io.IOException
 
 class SetupHelper {
 
-    // TODO: If we want RAG but probably not needed so far?
-    // https://ollama.com/library/nemotron-mini
-    val MODEL = "llama3.2"
-    private val COMMAND = "ollama"
+    companion object {
+        // TODO: If we want RAG but probably not needed so far?
+        // https://ollama.com/library/nemotron-mini
+        private val COMMAND = "ollama"
+
+
+        // Check if Ollama is installed
+        val isOllamaInstalled: Boolean by lazy {
+            try {
+                val process = ProcessBuilder("ollama", "--version")
+                    .inheritIO()
+                    .redirectErrorStream(true)
+                    .start()
+                process.waitFor() == 0
+            } catch (e: IOException) {
+                e.printStackTrace()
+                false
+            }
+        }
+    }
 
     fun startOlama() {
-        if (!isOllamaInstalled()) {
+        if (!isOllamaInstalled) {
             println("Ollama not found. Attempting installation...")
             installOllama()
         }
@@ -38,20 +57,6 @@ class SetupHelper {
                 println("Server health check failed!")
             }
             Thread.sleep(3000) // Check every 3 seconds
-        }
-    }
-
-    // Check if Ollama is installed
-    fun isOllamaInstalled(): Boolean {
-        return try {
-            val process = ProcessBuilder("ollama", "--version")
-                .inheritIO()
-                .redirectErrorStream(true)
-                .start()
-            process.waitFor() == 0
-        } catch (e: IOException) {
-            e.printStackTrace()
-            false
         }
     }
 
@@ -91,7 +96,7 @@ class SetupHelper {
         }
 
         // Get test response to start model without blocking process.
-        ChatGPTAdventure().getDynamicResponse("Answer to test")
+        ChatService(API_URL, MODEL).generateStoryIndependentStuff("Answer to test", Settings.DEFAULT_LANGUAGE)
     }
 
     // Check server health by running `ollama ps` and looking for llama3.2

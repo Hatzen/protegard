@@ -12,12 +12,8 @@ import java.util.*
 class TextIO : IView {
     private lateinit var scanner: Scanner
 
-    // TODO: remove
-    private var lastMessage = ""
-
-    fun start() {
+    override fun start() {
         showIntro()
-        GameController.init(this)
         scanner = Scanner(System.`in`)
         while (true) {
             val choice = scanner.nextLine().lowercase().trim()
