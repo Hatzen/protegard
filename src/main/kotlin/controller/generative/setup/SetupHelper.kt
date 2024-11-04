@@ -109,10 +109,10 @@ class SetupHelper {
     fun runCommand(command: List<String>): String? {
         return try {
             // TODO: debug only..
-            println("Command run: $command")
             val process = ProcessBuilder(command)
                 .redirectErrorStream(true)
                 .start()
+            println("Command run: $command")
             process.inputStream.bufferedReader().use { it.readText() }
         } catch (e: IOException) {
             println("Command failed: $command")

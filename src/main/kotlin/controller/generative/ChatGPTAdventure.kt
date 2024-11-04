@@ -39,6 +39,15 @@ class ChatGPTAdventure(private val settings: Settings, private val environment: 
         return getDynamicResponse { chatService!!.generateStoryIndependentStuff(message, language) }
     }
 
+    fun isPositive(
+        message: String,
+    ): Boolean {
+        if (!settings.useLLMs) {
+            return true
+        }
+        return chatService!!.isPositive(message)
+    }
+
     fun translate(
         message: String,
         languageTo: String = settings.language,
@@ -46,6 +55,13 @@ class ChatGPTAdventure(private val settings: Settings, private val environment: 
     ): String {
         return getDynamicResponse { chatService!!.translate(message, languageTo, languageFrom) }
     }
+
+    fun getTechnicalResponse(
+        message: String
+    ): String {
+        return getDynamicResponse { chatService!!.getTechnicalResponse(message) }
+    }
+
 
     private fun getDynamicResponse(supp: () -> CompletableFuture<String>): String {
         if (!settings.useLLMs) {

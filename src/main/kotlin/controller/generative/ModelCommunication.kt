@@ -1,9 +1,13 @@
 package controller.generative
 
-import dev.langchain4j.service.SystemMessage
-import dev.langchain4j.service.TokenStream
-import dev.langchain4j.service.V
+import controller.generative.ChatService.Companion.StoryBasedMemoryId
+import controller.generative.ChatService.Companion.StoryIndependendMemoryId
+import controller.generative.ChatService.Companion.TechniclaMemoryId
+import controller.generative.ChatService.Companion.TranslationMemoryId
+import dev.langchain4j.service.*
 
+
+// TODO: Edit prompts to remove formatting like ** ** for headline
 interface ModelCommunication {
 
     @SystemMessage(
@@ -18,9 +22,10 @@ interface ModelCommunication {
             """
     )
     fun getNarratorBasedContent(
-        message: String,
+        @UserMessage message: String,
         @V("language") language: String,
-        @V("chapter") chapter: String
+        @V("chapter") chapter: String,
+        @MemoryId id: Int = StoryBasedMemoryId
     ): TokenStream
 
 
@@ -29,17 +34,77 @@ interface ModelCommunication {
             You answer always in language {{language}}.    
         """
     )
-    fun generateStoryIndependentStuff(message: String, @V("language") language: String): TokenStream
+    fun generateStoryIndependentStuff(
+        @UserMessage message: String,
+        @V("language") language: String,
+        @MemoryId id: Int = StoryIndependendMemoryId
+    ): TokenStream
+
+    /*
+
+    Exception in thread "main" java.lang.NullPointerException: Cannot invoke "dev.langchain4j.model.chat.ChatLanguageModel.generate(java.util.List)" because "this.this$0.context.chatModel" is null
+        at dev.langchain4j.service.DefaultAiServices$1.invoke(DefaultAiServices.java:228)
+    @SystemMessage(
+        """
+                Evaluate the message to true or false please.
+            """
+    )
+    fun isPositive(
+        @UserMessage message: String,
+        @MemoryId id: Int = StoryIndependendMemoryId
+    ): Boolean
+*/
+
+    /*
+
+    @UserMessage("Does {{it}} has a positive sentiment?")
+    fun isPositive(text: String): Boolean
+
+     */
+
+    /*
+    Exception in thread "main" dev.langchain4j.exception.IllegalConfigurationException: Parameter 'arg0' of method 'isPositive' should be annotated with @V or @UserMessage or @UserName or @MemoryId
+    at dev.langchain4j.exception.IllegalConfigurationException.illegalConfiguration(IllegalConfigurationException.java:16)
+    @UserMessage(
+        """
+            {{message}}.
+            Is this the answer to your previous told question?
+            """
+    )
+    fun isPositive(
+        @V("message")
+        message: String// ,
+        //@MemoryId id: Int = StoryIndependendMemoryId
+    ): Boolean
+    */
+    @UserMessage(
+        """
+        {{message}}.
+        Is this the answer to your previous told question?
+        """
+    )
+    fun isPositive(
+        @V("message")
+        message: String,
+        @MemoryId id: Int = StoryIndependendMemoryId
+    ): Boolean
+
 
     @SystemMessage(
         """
-            You are the perfect translator you translate any input in a manner that native and fluent speakers would use to translate even 
-            Translate the input from {{languageFrom}} to {{languageTo}}.    
-        """
+        You are the perfect translator you translate any input in a manner that native and fluent speakers would use to translate even 
+        Translate the input from {{languageFrom}} to {{languageTo}}.    
+    """
     )
     fun translate(
-        message: String,
+        @UserMessage message: String,
         @V("languageTo") languageTo: String,
-        @V("languageFrom") languageFrom: String
+        @V("languageFrom") languageFrom: String,
+        @MemoryId id: Int = TranslationMemoryId
+    ): TokenStream
+
+    fun getTechnicalResponse(
+        @UserMessage message: String,
+        @MemoryId id: Int = TechniclaMemoryId
     ): TokenStream
 }

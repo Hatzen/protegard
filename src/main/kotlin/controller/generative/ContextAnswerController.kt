@@ -1,11 +1,8 @@
 package org.example.controller.generative
 
 import dev.langchain4j.service.MemoryId
-import org.example.controller.generative.ChatGPTAdventure.Companion.STATIC_NO_LLM_ANSWER
 
-object ContextAnswerController {
-
-    lateinit var chatGPTAdventure: ChatGPTAdventure
+class ContextAnswerController(private val chatGPTAdventure: ChatGPTAdventure) {
 
     fun getBookContentForTopic(@MemoryId topic: String): String {
         return chatGPTAdventure.generateStoryIndependentStuff(
@@ -28,15 +25,12 @@ object ContextAnswerController {
     fun isValidAnswerForTopic(answer: String): Boolean {
         val matched = "true"
         val notMached = "false"
-        val evaluated = chatGPTAdventure.generateStoryIndependentStuff(
+        val evaluated = chatGPTAdventure.isPositive(
             """
          Answer only exactly "$matched" or "$notMached" if the answer for your previous generated question is correct. The Answer is "$answer"
             """.trimIndent()
-        ).lowercase()
-        if (!listOf(matched, notMached, STATIC_NO_LLM_ANSWER).contains(evaluated)) {
-            throw RuntimeException("evaluated $evaluated is not a valid response")
-        }
-        return evaluated == STATIC_NO_LLM_ANSWER || evaluated == matched
+        )
+        return evaluated
     }
 
 }
