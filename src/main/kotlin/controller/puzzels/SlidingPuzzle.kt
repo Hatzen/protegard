@@ -1,5 +1,7 @@
 package org.example.controller.puzzels
 
+/*
+// TODO: Why is javafx not available anymore after upgrading and downgrading jvm version from 11 to 15
 import javafx.application.Application
 import javafx.geometry.Pos
 import javafx.scene.Scene
@@ -178,3 +180,4 @@ class SlidingPuzzle : Application() {
 fun main() {
     Application.launch(SlidingPuzzle::class.java)
 }
+*/
