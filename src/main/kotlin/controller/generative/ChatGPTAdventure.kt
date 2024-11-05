@@ -39,19 +39,19 @@ class ChatGPTAdventure(private val settings: Settings, private val environment: 
         return getDynamicResponse { chatService!!.generateStoryIndependentStuff(message, language) }
     }
 
-    fun isPositive(
+    fun isCorrectAnswerToPreviousGeneratedQuestion(
         message: String,
     ): Boolean {
         if (!settings.useLLMs) {
             return true
         }
-        return chatService!!.isPositive(message)
+        return chatService!!.isCorrectAnswerToPreviousGeneratedQuestion(message)
     }
 
     fun translate(
         message: String,
         languageTo: String = settings.language,
-        languageFrom: String = Settings.DEFAULT_LANGUAGE
+        languageFrom: String = "detect source language"
     ): String {
         return getDynamicResponse { chatService!!.translate(message, languageTo, languageFrom) }
     }

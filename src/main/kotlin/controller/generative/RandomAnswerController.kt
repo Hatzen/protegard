@@ -3,8 +3,8 @@ package org.example.controller.generative
 import org.example.model.interfaces.Identifieable
 import java.util.*
 
-object RandomAnswerController {
-    lateinit var chatGPTAdventure: ChatGPTAdventure
+class RandomAnswerController(val chatGPTAdventure: ChatGPTAdventure) {
+
 
     fun getRandomNewspaper(date: Date): String {
         return chatGPTAdventure.generateStoryIndependentStuff(

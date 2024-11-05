@@ -5,16 +5,18 @@ import org.example.controller.GameController.getAllPeople
 import org.example.controller.GameController.getAllRoomConnections
 import org.example.controller.GameController.lookAround
 import org.example.controller.IView
+import org.example.controller.generative.ChatGPTAdventure
 import org.example.model.interfaces.Identifieable
 import org.example.view.text.TextCommands.*
 import java.util.*
 
-class TextIO : IView {
+class TextIO(val translator: ChatGPTAdventure) : IView {
     private lateinit var scanner: Scanner
 
     override fun start() {
         showIntro()
         scanner = Scanner(System.`in`)
+
         while (true) {
             val choice = scanner.nextLine().lowercase().trim()
 
@@ -29,7 +31,7 @@ class TextIO : IView {
             } catch (ex: IllegalArgumentException) {
                 // TODO: Remove when debugging finished. Overall logging would be nice but is just overhead?
                 ex.printStackTrace()
-                println("Wrong parameters please try again.. Enter h for Help")
+                tellUser("Wrong parameters please try again.. Enter h for Help")
             }
         }
 
@@ -37,10 +39,10 @@ class TextIO : IView {
 
 
     private fun showIntro() {
-        println("Type:")
-        println("Help or h to show commands")
-        println("Exit or x to exit program")
-        println("The Game begins..")
+        tellUser("Type:")
+        tellUser("Help or h to show commands")
+        tellUser("Exit or x to exit program")
+        tellUser("The Game begins..")
     }
 
     private fun handleChoice(commandsAndParameters: List<String>) {
@@ -120,21 +122,21 @@ class TextIO : IView {
 
     private fun printHelp() {
         for (x in TextCommands.entries) {
-            println("Command " + x.value.key + " shortcut " + x.value.shortcut + " minParameter " + x.value.numberOfIdentifiersMin + " maxParameter " + x.value.numberOfIdentifiersMax)
+            tellUser("Command " + x.value.key + " shortcut " + x.value.shortcut + " minParameter " + x.value.numberOfIdentifiersMin + " maxParameter " + x.value.numberOfIdentifiersMax)
         }
     }
 
     private fun printIdentifiables(list: List<Identifieable>) {
-        println("Available:")
-        println(list.map { it.name }.joinToString { "$it, " })
+        tellUser("Available:")
+        tellUser(list.map { it.name }.joinToString { "$it, " })
     }
 
     override fun addText(text: String, source: Identifieable) {
-        println(source.name + ": " + text)
+        tellUser(source.name + ": " + text)
     }
 
     override fun addText(text: String) {
-        println(text)
+        tellUser(text)
     }
 
 
@@ -143,12 +145,13 @@ class TextIO : IView {
             try {
                 return scanner.nextInt()
             } catch (ex: NoSuchElementException) {
-                println("Not a valid choice, please type just the number.")
+                tellUser("Not a valid choice, please type just the number.")
             }
         } while (true)
     }
 
-    private fun print(text: String) {
-        println(text)
+    private fun tellUser(text: String) {
+        val translatedText = translator.translate(text)
+        println(translatedText)
     }
 }

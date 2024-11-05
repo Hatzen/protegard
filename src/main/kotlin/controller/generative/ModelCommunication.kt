@@ -40,50 +40,13 @@ interface ModelCommunication {
         @MemoryId id: Int = StoryIndependendMemoryId
     ): TokenStream
 
-    /*
-
-    Exception in thread "main" java.lang.NullPointerException: Cannot invoke "dev.langchain4j.model.chat.ChatLanguageModel.generate(java.util.List)" because "this.this$0.context.chatModel" is null
-        at dev.langchain4j.service.DefaultAiServices$1.invoke(DefaultAiServices.java:228)
-    @SystemMessage(
-        """
-                Evaluate the message to true or false please.
-            """
-    )
-    fun isPositive(
-        @UserMessage message: String,
-        @MemoryId id: Int = StoryIndependendMemoryId
-    ): Boolean
-*/
-
-    /*
-
-    @UserMessage("Does {{it}} has a positive sentiment?")
-    fun isPositive(text: String): Boolean
-
-     */
-
-    /*
-    Exception in thread "main" dev.langchain4j.exception.IllegalConfigurationException: Parameter 'arg0' of method 'isPositive' should be annotated with @V or @UserMessage or @UserName or @MemoryId
-    at dev.langchain4j.exception.IllegalConfigurationException.illegalConfiguration(IllegalConfigurationException.java:16)
-    @UserMessage(
-        """
-            {{message}}.
-            Is this the answer to your previous told question?
-            """
-    )
-    fun isPositive(
-        @V("message")
-        message: String// ,
-        //@MemoryId id: Int = StoryIndependendMemoryId
-    ): Boolean
-    */
     @UserMessage(
         """
         {{message}}.
-        Is this the answer to your previous told question?
+        Is that the correct answer to your previous told question?
         """
     )
-    fun isPositive(
+    fun isCorrectAnswerToPreviousGeneratedQuestion(
         @V("message")
         message: String,
         @MemoryId id: Int = StoryIndependendMemoryId
@@ -100,6 +63,8 @@ interface ModelCommunication {
         @UserMessage message: String,
         @V("languageTo") languageTo: String,
         @V("languageFrom") languageFrom: String,
+        // TODO: Maybe better use Tools to keep and store the language to avoid false positives.
+        // TODO: Or in general use tools to use deepl to get more proper translations?
         @MemoryId id: Int = TranslationMemoryId
     ): TokenStream
 

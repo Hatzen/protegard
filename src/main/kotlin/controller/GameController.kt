@@ -1,33 +1,36 @@
 package org.example.controller
 
 import model.RoomObject
+import org.example.controller.generative.ChatGPTAdventure
+import org.example.controller.generative.ContextAnswerController
 import org.example.controller.generative.RandomAnswerController
 import org.example.controller.generative.setup.SetupHelper
 import org.example.model.*
 import org.example.model.interfaces.Identifieable
 import org.example.model.scenario.Characters
 import org.example.model.scenario.Rooms
+import org.example.model.settings.Settings
 import org.example.view.text.TextIO
 import kotlin.system.exitProcess
 
 object GameController {
 
-    // TODO: Remove or even better get rid of singletons and instanciate (leading to constructor problems, DI?)
-    // val characters = Characters()
-    // val items = Items()
-    // val rooms = Rooms()
-    // val rooms = Rooms()
-
     lateinit var view: IView
+    lateinit var randomAnswerController: RandomAnswerController
+    lateinit var contextAnswerController: ContextAnswerController
 
     // TODO: This usually depends on the room we are currently in..
     lateinit var environment: Environment
 
     fun init() {
         SetupHelper().startOlama()
-        Rooms.init()
 
-        this.view = TextIO()
+        Rooms.init()
+        environment = Environment()
+        randomAnswerController = RandomAnswerController(ChatGPTAdventure(Settings, environment))
+        contextAnswerController = ContextAnswerController(ChatGPTAdventure(Settings, environment))
+
+        this.view = TextIO(ChatGPTAdventure(Settings, environment))
         view.start()
 
         // TODO: save / load
@@ -51,7 +54,7 @@ object GameController {
         to.interact()
         val dialog = to.dialogs
         if (dialog == null) {
-            val answer = RandomAnswerController.getRandomAnswerForPeopleWithoutDialog(to)
+            val answer = randomAnswerController.getRandomAnswerForPeopleWithoutDialog(to)
             addDialog(answer, to)
             return
         }

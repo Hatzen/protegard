@@ -25,7 +25,7 @@ class ContextAnswerController(private val chatGPTAdventure: ChatGPTAdventure) {
     fun isValidAnswerForTopic(answer: String): Boolean {
         val matched = "true"
         val notMached = "false"
-        val evaluated = chatGPTAdventure.isPositive(
+        val evaluated = chatGPTAdventure.isCorrectAnswerToPreviousGeneratedQuestion(
             """
          Answer only exactly "$matched" or "$notMached" if the answer for your previous generated question is correct. The Answer is "$answer"
             """.trimIndent()

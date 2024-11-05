@@ -96,10 +96,10 @@ class ChatService {
         return ask { assistant.generateStoryIndependentStuff(message, language) }
     }
 
-    fun isPositive(
+    fun isCorrectAnswerToPreviousGeneratedQuestion(
         message: String
     ): Boolean {
-        return assistant.isPositive(message)
+        return assistant.isCorrectAnswerToPreviousGeneratedQuestion(message)
     }
 
     fun translate(message: String, languageTo: String, languageFrom: String): CompletableFuture<String> {
