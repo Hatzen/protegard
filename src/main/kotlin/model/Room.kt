@@ -24,9 +24,11 @@ abstract class Room(
     open fun canLeave() = true
 }
 
-class RoomConnection(override val name: String, val toRoom: Room, val travelMessage: () -> String? = { null }) :
-    Identifieable {
-    fun canTravel(): Boolean {
+open class RoomConnection(
+    override val name: String, val toRoom: Room,
+    val travelMessage: () -> String? = { null }
+) : Identifieable {
+    open fun canTravel(): Boolean {
         return travelMessage != null
     }
 }

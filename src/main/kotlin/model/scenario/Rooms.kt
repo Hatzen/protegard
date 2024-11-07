@@ -5,6 +5,7 @@ import org.example.model.scenario.rooms.VillageEntry
 
 object Rooms {
     val villageEntry = VillageEntry()
+    val villageHospital = VillageEntry()
     val castleEntry = CastleEntry()
 
     val all = listOf(villageEntry, castleEntry)

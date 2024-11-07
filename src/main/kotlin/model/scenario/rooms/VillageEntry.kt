@@ -11,10 +11,12 @@ class VillageEntry : Room("Village") {
 
     override fun initConnections() {
         connections.add(RoomConnection("Street to castle", Rooms.castleEntry))
+        connections.add(RoomConnection("Village Hospital", Rooms.villageHospital, { "i dont feel sick." }))
     }
 
     override fun initRoomObjects() {
         objects.add(RoomObjects.bench)
+        objects.add(RoomObjects.newspaperStore)
         objects.add(RoomObjects.rareCoin)
     }
 
