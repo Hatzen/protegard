@@ -1,4 +1,4 @@
-package org.example.controller.puzzels
+package org.example.controller.puzzels.depreacted
 
 import java.awt.BorderLayout
 import java.awt.Dimension

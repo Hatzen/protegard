@@ -1,4 +1,4 @@
-package org.example.controller.puzzels
+package org.example.controller.puzzels.depreacted
 
 /*
 // TODO: Why is javafx not available anymore after upgrading and downgrading jvm version from 11 to 15

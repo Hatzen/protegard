@@ -1,4 +1,4 @@
-package com.example;
+package controller.puzzels.depreacted;
 
 // BufferedImage image = ImageIO.read(new File("C:\\Users\\kaiha\\Desktop\\projects\\Protegard\\images\\4x4.jpg")); // Setze den Pfad zu deinem Bild
 

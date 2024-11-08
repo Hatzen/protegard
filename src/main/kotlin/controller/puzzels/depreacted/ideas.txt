@@ -56,3 +56,14 @@ Beschreibung: Dir werden verschiedene geometrische Formen präsentiert, und du m
 Interaktion: Ziehe und kombiniere die Formen.
 Ziel: Erreiche die Zielkonfiguration mit minimalen Kombinationen.
 Diese Rätsel kombinieren logisches Denken mit minimalen Interaktionen und können sowohl für Einzelspieler als auch in einem Multiplayer-Umfeld interessant gestaltet werden. Wenn du spezifische Implementierungsdetails oder weitere Ideen benötigst, lass es mich wissen!
+
+
+
+
+
+
+
+
+
+Give me the kotlin Code for Odd one out which can provide random but resolvable sequences, it should provide at least 10 categories with at least 4 elements and has a callback when user entered the correct number.
+the categories should be vikings, science, aliens, sky, chemistry, philosophy, physics, society, informatic
