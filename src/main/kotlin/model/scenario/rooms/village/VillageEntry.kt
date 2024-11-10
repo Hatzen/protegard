@@ -1,4 +1,4 @@
-package org.example.model.scenario.rooms
+package org.example.model.scenario.rooms.village
 
 import org.example.model.Character
 import org.example.model.Room

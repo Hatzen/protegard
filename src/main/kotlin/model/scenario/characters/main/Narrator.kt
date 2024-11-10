@@ -1,10 +1,9 @@
-package org.example.model.scenario.characters
+package org.example.model.scenario.characters.main
 
-import org.example.model.Attributes
 import org.example.model.Character
 import org.example.model.scenario.Rooms
 
-class Narrator: Character("Narrator", Rooms.villageEntry) {
+class Narrator : Character("Narrator", Rooms.villageEntry) {
 
     val DIALOG_ENTRY = """
         Kapitel 1: Ankunft und erste Spuren

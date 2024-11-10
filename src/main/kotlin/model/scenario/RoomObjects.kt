@@ -1,8 +1,8 @@
 package org.example.model.scenario
 
-import model.scenario.roomobjects.Bench
-import org.example.model.scenario.roomobjects.NewspaperStore
-import org.example.model.scenario.roomobjects.RareCoin
+import org.example.model.scenario.roomobjects.villageentry.Bench
+import org.example.model.scenario.roomobjects.villageentry.NewspaperStore
+import org.example.model.scenario.roomobjects.villageentry.RareCoin
 
 object RoomObjects {
     val bench = Bench()

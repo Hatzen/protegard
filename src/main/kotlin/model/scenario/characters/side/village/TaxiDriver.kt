@@ -1,4 +1,4 @@
-package org.example.model.scenario.characters
+package org.example.model.scenario.characters.side.village
 
 import org.example.model.Character
 import org.example.model.Dialog
