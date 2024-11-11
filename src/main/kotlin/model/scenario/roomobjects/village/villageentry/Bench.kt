@@ -1,4 +1,4 @@
-package org.example.model.scenario.roomobjects.villageentry
+package org.example.model.scenario.roomobjects.village.villageentry
 
 import model.RoomObject
 import org.example.controller.GameController
