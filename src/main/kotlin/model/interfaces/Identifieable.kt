@@ -2,7 +2,7 @@ package org.example.model.interfaces
 
 interface Identifieable {
 
-    val name: String
+    val fullname: String
 
     fun preconditionToIdentify(): Boolean = true
 }

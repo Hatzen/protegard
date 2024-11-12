@@ -1,6 +1,6 @@
 package org.example.model.scenario.characters.main
 
-import org.example.model.Character
+import org.example.model.common.Character
 import org.example.model.scenario.Rooms
 
 class Narrator : Character("Narrator", Rooms.villageEntry) {

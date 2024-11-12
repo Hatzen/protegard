@@ -117,7 +117,7 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
     }
 
     private fun isMatch(identifieable: Identifieable, identifier: String): Boolean {
-        return identifieable.name.lowercase().startsWith(identifier.lowercase(), true)
+        return identifieable.fullname.lowercase().startsWith(identifier.lowercase(), true)
     }
 
     private fun printHelp() {
@@ -128,11 +128,11 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
 
     private fun printIdentifiables(list: List<Identifieable>) {
         tellUser("Available:")
-        tellUser(list.map { it.name }.joinToString { "$it, " })
+        tellUser(list.map { it.fullname }.joinToString { "$it, " })
     }
 
     override fun addText(text: String, source: Identifieable) {
-        tellUser(source.name + ": " + text)
+        tellUser(source.fullname + ": " + text)
     }
 
     override fun addText(text: String) {

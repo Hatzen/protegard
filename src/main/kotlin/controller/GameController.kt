@@ -1,14 +1,14 @@
 package org.example.controller
 
-import model.RoomObject
 import org.example.controller.generative.ChatGPTAdventure
 import org.example.controller.generative.ContextAnswerController
 import org.example.controller.generative.RandomAnswerController
 import org.example.controller.generative.setup.SetupHelper
-import org.example.model.*
+import org.example.model.common.*
 import org.example.model.interfaces.Identifieable
 import org.example.model.scenario.Characters
 import org.example.model.scenario.Rooms
+import org.example.model.scenario.Scenario
 import org.example.model.settings.Settings
 import org.example.view.text.TextIO
 import kotlin.system.exitProcess

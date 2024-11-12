@@ -1,7 +1,7 @@
 package org.example.model.scenario.characters.side.village
 
-import org.example.model.Character
-import org.example.model.Dialog
+import org.example.model.common.Character
+import org.example.model.common.Dialog
 import org.example.model.scenario.Rooms
 
 class TaxiDriver : Character("Taxi Driver", Rooms.villageEntry) {

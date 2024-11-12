@@ -1,10 +1,10 @@
-package org.example.model
+package org.example.model.common
 
 import org.example.model.interfaces.Identifieable
 import org.example.model.interfaces.Interactable
 
 open class Character(
-    override var name: String,
+    final override var fullname: String,
 
     var currentRoom: Room,
     var attributes: Attributes = Attributes(),
@@ -12,6 +12,13 @@ open class Character(
     var inventory: MutableList<Item> = mutableListOf(),
     var alive: Boolean = true
 ) : Interactable, Identifieable {
+    val firstName: String
+    val lastName: String
+
+    init {
+        firstName = fullname.split(" ").first()
+        lastName = fullname.split(" ").last()
+    }
 
     var trust: Map<Character, Int> = mapOf()
 

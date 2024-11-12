@@ -2,7 +2,7 @@ package controller.generative
 
 import org.example.controller.generative.ChatGPTAdventure
 import org.example.controller.generative.setup.SetupHelper
-import org.example.model.Environment
+import org.example.model.common.Environment
 import org.example.model.settings.Settings
 import java.util.*
 

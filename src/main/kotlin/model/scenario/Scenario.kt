@@ -1,8 +1,6 @@
-package org.example.model
+package org.example.model.scenario
 
 import org.example.controller.GameController
-import org.example.model.scenario.Characters
-import org.example.model.scenario.Rooms
 
 class Scenario {
     fun firstIntro() {

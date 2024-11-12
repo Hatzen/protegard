@@ -1,4 +1,4 @@
-package org.example.model
+package org.example.model.common
 
 import org.example.model.milestones.Chapter
 import org.example.model.milestones.Milestone

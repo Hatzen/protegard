@@ -1,10 +1,9 @@
-package org.example.model
+package org.example.model.common
 
-import model.RoomObject
 import org.example.model.interfaces.Identifieable
 
 abstract class Room(
-    override var name: String,
+    override var fullname: String,
     var connections: MutableList<RoomConnection> = mutableListOf(),
     var people: MutableList<Character> = mutableListOf(),
     var objects: MutableList<RoomObject> = mutableListOf()
@@ -25,7 +24,7 @@ abstract class Room(
 }
 
 open class RoomConnection(
-    override val name: String, val toRoom: Room,
+    override val fullname: String, val toRoom: Room,
     val travelMessage: () -> String? = { null }
 ) : Identifieable {
     open fun canTravel(): Boolean {

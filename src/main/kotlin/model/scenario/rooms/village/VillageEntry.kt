@@ -1,8 +1,8 @@
 package org.example.model.scenario.rooms.village
 
-import org.example.model.Character
-import org.example.model.Room
-import org.example.model.RoomConnection
+import org.example.model.common.Character
+import org.example.model.common.Room
+import org.example.model.common.RoomConnection
 import org.example.model.scenario.RoomObjects
 import org.example.model.scenario.Rooms
 

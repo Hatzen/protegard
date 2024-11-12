@@ -1,7 +1,7 @@
 package org.example.model.scenario.roomobjects.castle.attic
 
-import model.RoomObject
 import org.example.controller.GameController
+import org.example.model.common.RoomObject
 import org.example.model.scenario.Characters
 
 class Piano : RoomObject("Piano") {

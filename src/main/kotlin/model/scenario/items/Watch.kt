@@ -1,10 +1,10 @@
 package org.example.model.scenario.items
 
 import org.example.controller.GameController
-import org.example.model.Hue
-import org.example.model.Item
+import org.example.model.common.Hue
+import org.example.model.common.Item
 
-class Watch: Item("Watch") {
+class Watch : Item("Watch") {
 
     // TODO: wind up the watch, if not done every 2 hours reset it
     override fun interact() {

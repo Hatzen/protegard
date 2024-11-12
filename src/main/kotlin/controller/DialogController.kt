@@ -1,6 +1,6 @@
 package org.example.controller
 
-import org.example.model.Dialog
+import org.example.model.common.Dialog
 
 class DialogController(private var dialog: Dialog, private val view: IView) {
 

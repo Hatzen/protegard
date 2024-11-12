@@ -1,8 +1,8 @@
 package org.example.model.scenario.items
 
-import org.example.model.Item
+import org.example.model.common.Item
 
-class Paper: Item("Paper") {
+class Paper : Item("Paper") {
 
     var isEmpty = false
 
