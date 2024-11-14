@@ -1,12 +1,12 @@
 package org.example.controller.generative
 
 import org.example.model.interfaces.Identifieable
-import java.util.*
+import java.time.LocalDate
 
 class RandomAnswerController(val chatGPTAdventure: ChatGPTAdventure) {
 
 
-    fun getRandomNewspaper(date: Date): String {
+    fun getRandomNewspaper(date: LocalDate): String {
         return chatGPTAdventure.generateStoryIndependentStuff(
             """
          Give me a random newspaper article from the year $date        

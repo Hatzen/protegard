@@ -3,14 +3,14 @@ package org.example.model.scenario.roomobjects.village.villageentry
 import org.example.controller.GameController
 import org.example.model.common.RoomObject
 import org.example.model.scenario.Characters
-import java.util.*
+import java.time.LocalDate
 
 class NewspaperStore : RoomObject("Newsstand") {
-    private val newspaperCounter = HashMap<Date, List<String>>()
+    private val newspaperCounter = HashMap<LocalDate, List<String>>()
     private val MAX_PER_DAY = 3
 
     override fun interact() {
-        val date = GameController.environment.dateTime
+        val date = GameController.environment.currentGameDateTime.toLocalDate()
         val list = newspaperCounter.getOrPut(date) { mutableListOf() }
         if (list.size >= MAX_PER_DAY) {
             GameController.addDialog("Nothing new.. " + list.random(), Characters.NARRATOR)

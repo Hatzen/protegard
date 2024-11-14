@@ -4,7 +4,11 @@ import org.example.controller.generative.ChatGPTAdventure
 import org.example.controller.generative.ContextAnswerController
 import org.example.controller.generative.RandomAnswerController
 import org.example.controller.generative.setup.SetupHelper
-import org.example.model.common.*
+import org.example.model.common.Character
+import org.example.model.common.Item
+import org.example.model.common.RoomConnection
+import org.example.model.common.RoomObject
+import org.example.model.common.environment.Environment
 import org.example.model.interfaces.Identifieable
 import org.example.model.scenario.Characters
 import org.example.model.scenario.Rooms

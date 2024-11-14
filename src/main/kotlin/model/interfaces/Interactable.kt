@@ -2,7 +2,17 @@ package org.example.model.interfaces
 
 interface Interactable {
 
-    fun interact()
+    /*
+    val DEFAULT_ACTION: String
+        get() = "DEFAULT"
 
+    fun interact() {
+        interact(DEFAULT_ACTION)
+    }
+
+    fun interact(action: String)
+     */
+
+    fun interact()
     fun preconditionToInteract(): Boolean = true
 }

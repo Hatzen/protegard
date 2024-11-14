@@ -2,7 +2,7 @@ package org.example.controller.generative
 
 import controller.generative.ChatService
 import org.example.controller.generative.setup.SetupHelper
-import org.example.model.common.Environment
+import org.example.model.common.environment.Environment
 import org.example.model.settings.Settings
 import java.util.concurrent.CompletableFuture
 
