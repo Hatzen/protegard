@@ -7,15 +7,19 @@ import org.example.model.common.Item
 import org.example.model.common.environment.Callback
 import org.example.model.common.environment.CountDownTimer
 import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 
 class Watch : Item("Watch") {
 
     var isCounting = true
     var lastTime = LocalTime.now()
+    var delay: Long = 0
     val callback: Callback
 
     init {
         callback = Callback({
+            val currentTime = GameController.environment.refreshAndGetTime()
+            lastTime = currentTime.toLocalTime()
             isCounting = false
             reset()
         }, 60, 1)
@@ -23,16 +27,29 @@ class Watch : Item("Watch") {
     }
 
     override fun interact() {
-        if (!isCounting) {
-            GameController.addDialog(lastTime.format(), this)
-        } else if (GameController.environment.hue.value >= Hue.OK.value) {
+        if (GameController.environment.hue.value >= Hue.OK.value) {
             val currentTime = GameController.environment.refreshAndGetTime()
-            lastTime = currentTime.toLocalTime()
-            GameController.addDialog(lastTime.format(), this)
-            return
+            if (!isCounting) {
+                delay = lastTime.until(currentTime, ChronoUnit.MINUTES)
+                GameController.addDialog(lastTime.format(), this)
+            } else {
+                lastTime = currentTime.toLocalTime().plusMinutes(delay)
+                GameController.addDialog(lastTime.format(), this)
+                return
+            }
         } else {
             GameController.addDialog("Cannot tell the time when its dark", this)
         }
+        windUpWatch()
         isCounting = true
+    }
+
+    private fun windUpWatch() {
+        callback.reset()
+    }
+
+    // TODO: Make interact customizable with commands.
+    fun setTimeByProperClock() {
+        delay = 0
     }
 }
