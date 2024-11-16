@@ -6,21 +6,45 @@ class DialogController(private var dialog: Dialog, private val view: IView) {
 
     private var previousDialog: Dialog? = null
 
-    init {
-        while (true) {
-            val text = dialog.text
-            // TODO: This is not correct, probably we need both, source and target. Or we just pass it down from first target, but it will switch..
-            val sourceUser = dialog.target
-            view.addText(text, sourceUser)
-            val answers = dialog.answers ?: break
-            val validAnswers = answers.filter { it.precondition() }.toMutableList()
-            validAnswers.forEachIndexed { index, dialog ->
-                val answer = dialog.text
-                view.addText("$index. $answer")
-            }
-            getAnswer(validAnswers)
-        }
+    private var dialogFinished = false
 
+    init {
+        while (!dialogFinished) {
+            handleDialog()
+        }
+    }
+
+    private fun handleDialog() {
+        val text = dialog.text
+        // TODO: This is not correct, probably we need both, source and target. Or we just pass it down from first target, but it will switch..
+        val sourceUser = dialog.target
+        view.addText(text, sourceUser)
+        val answers = dialog.answers
+        if (answers == null) {
+            endDialog()
+            return
+        }
+        val validAnswers = answers.filter { it.precondition() }.toMutableList()
+        if (validAnswers.size == 1) {
+            val nextDialog = validAnswers[0]
+            continueWithDialog(nextDialog)
+            return
+        }
+        validAnswers.forEachIndexed { index, dialog ->
+            val answer = dialog.text
+            view.addText("$index. $answer")
+        }
+        getAnswer(validAnswers)
+    }
+
+    private fun endDialog() {
+        dialogFinished = true
+    }
+
+    private fun continueWithDialog(nextDialog: Dialog) {
+        previousDialog = dialog
+        dialog.callback()
+        dialog = nextDialog
     }
 
     private fun getAnswer(answers: MutableList<Dialog>) {
@@ -36,8 +60,8 @@ class DialogController(private var dialog: Dialog, private val view: IView) {
                         previousDialog.answers!!.remove(dialog)
                     }
                 }
-                previousDialog = dialog
-                dialog = answers[choice]
+                val nextDialog = answers[choice]
+                continueWithDialog(nextDialog)
                 break
             }
         }

@@ -15,7 +15,7 @@ class TaxiDriver : Character("Taxi Driver", Rooms.villageEntry) {
             """.trimIndent(),
             mutableListOf(
                 Dialog("No problem i need a walk after that long trip anyway."),
-                Dialog("I dont know the exact way and wont keep my baggaeg on you so i will wait on that bench over there.")
+                Dialog("I dont know the exact way and wont keep my baggage on you so i will wait on that bench over there.")
             ),
             onlyOnce = true
         )

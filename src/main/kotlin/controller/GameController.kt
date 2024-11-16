@@ -4,10 +4,7 @@ import org.example.controller.generative.ChatGPTAdventure
 import org.example.controller.generative.ContextAnswerController
 import org.example.controller.generative.RandomAnswerController
 import org.example.controller.generative.setup.SetupHelper
-import org.example.model.common.Character
-import org.example.model.common.Item
-import org.example.model.common.RoomConnection
-import org.example.model.common.RoomObject
+import org.example.model.common.*
 import org.example.model.common.environment.Environment
 import org.example.model.interfaces.Identifieable
 import org.example.model.scenario.Characters
@@ -25,16 +22,18 @@ object GameController {
 
     // TODO: This usually depends on the room we are currently in..
     lateinit var environment: Environment
+    lateinit var gamestate: Gamestate
 
     fun init() {
         SetupHelper().startOlama()
 
         Rooms.init()
         environment = Environment()
-        randomAnswerController = RandomAnswerController(ChatGPTAdventure(Settings, environment))
-        contextAnswerController = ContextAnswerController(ChatGPTAdventure(Settings, environment))
+        gamestate = Gamestate()
+        randomAnswerController = RandomAnswerController(ChatGPTAdventure(Settings, gamestate))
+        contextAnswerController = ContextAnswerController(ChatGPTAdventure(Settings, gamestate))
 
-        this.view = TextIO(ChatGPTAdventure(Settings, environment))
+        this.view = TextIO(ChatGPTAdventure(Settings, gamestate))
         view.start()
 
         // TODO: save / load
@@ -85,13 +84,15 @@ object GameController {
         return Characters.MAIN_CHARACTER.currentRoom.people.filter { it.preconditionToIdentify() }
     }
 
-    fun lookAround(): List<Identifieable> {
-        val list: List<Identifieable> = getAllRoomConnections().map { it.toRoom }
-            .plus(getAllRoomObjects())
-            .plus(getAllPeople())
-            .filter { it.preconditionToIdentify() }
+    fun lookAround() {
+        val response = randomAnswerController.getRandomAnswerForLookingAround(
+            Characters.MAIN_CHARACTER.currentRoom,
+            getAllRoomConnections(),
+            getAllPeople(),
+            getAllRoomObjects()
+        )
 
-        return list
+        view.addText(response, Characters.NARRATOR)
     }
 
     fun exit() {

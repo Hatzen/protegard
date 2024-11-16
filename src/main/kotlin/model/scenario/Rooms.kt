@@ -4,8 +4,11 @@ import org.example.model.scenario.rooms.castle.*
 import org.example.model.scenario.rooms.village.VillageEntry
 
 object Rooms {
+    // Village
     val villageEntry = VillageEntry()
     val villageHospital = VillageEntry()
+
+    // Castle rooms
     val castleEntry = CastleEntry()
     val attic = Attic()
     val basement = Basement()

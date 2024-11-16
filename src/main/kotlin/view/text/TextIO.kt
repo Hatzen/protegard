@@ -97,15 +97,14 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
             }
 
             LOOKAROUND -> {
-                val list: List<Identifieable> = lookAround()
-
-                printIdentifiables(list)
+                lookAround()
             }
 
             LISTITEMS -> {
                 printIdentifiables(GameController.getInventory())
             }
 
+            // TODO: The game would be more immersive if we only use look around..
             LISTCONNECTIONS ->
                 printIdentifiables(getAllRoomConnections().map { it.toRoom })
 

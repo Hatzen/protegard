@@ -2,11 +2,11 @@ package org.example.controller.generative
 
 import controller.generative.ChatService
 import org.example.controller.generative.setup.SetupHelper
-import org.example.model.common.environment.Environment
+import org.example.model.common.Gamestate
 import org.example.model.settings.Settings
 import java.util.concurrent.CompletableFuture
 
-class ChatGPTAdventure(private val settings: Settings, private val environment: Environment) {
+class ChatGPTAdventure(private val settings: Settings, private val gamestate: Gamestate) {
 
     companion object {
         const val API_URL: String = "http://localhost:11434"
@@ -27,7 +27,7 @@ class ChatGPTAdventure(private val settings: Settings, private val environment: 
     fun getNarratorBasedContent(
         message: String,
         language: String = settings.language,
-        chapter: String = environment.currentChapter.getChaptersUntilThis().joinToString { it.chapterContent }
+        chapter: String = gamestate.currentChapter.getChaptersUntilThis().joinToString { it.chapterContent }
     ): String {
         return getDynamicResponse { chatService!!.getNarratorBasedContent(message, language, chapter) }
     }

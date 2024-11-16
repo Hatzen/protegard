@@ -2,8 +2,6 @@ package org.example.model.common.environment
 
 import model.common.environment.Heat
 import model.common.environment.Hue
-import org.example.model.milestones.Chapter
-import org.example.model.milestones.Milestone
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -11,8 +9,6 @@ import java.time.temporal.ChronoUnit
 import kotlin.time.Duration.Companion.minutes
 
 class Environment {
-    var currentChapter = Chapter.CHAPTER1
-    var reachedMilestone: List<Milestone> = mutableListOf()
     var currentGameDateTime: LocalDateTime = LocalDateTime.now()
     var startTime: LocalDateTime = LocalDateTime.now()
     var temperature = Heat.OK
