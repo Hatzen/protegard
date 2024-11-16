@@ -1,15 +1,15 @@
 package controller.generative
 
-import org.example.controller.generative.ChatGPTAdventure
-import org.example.controller.generative.ContextAnswerController
-import org.example.controller.generative.setup.SetupHelper
-import org.example.model.common.environment.Environment
-import org.example.model.settings.Settings
+import de.hartz.software.protegard.controller.generative.ChatGPTAdventure
+import de.hartz.software.protegard.controller.generative.ContextAnswerController
+import de.hartz.software.protegard.controller.generative.setup.SetupHelper
+import de.hartz.software.protegard.model.common.Gamestate
+import de.hartz.software.protegard.model.settings.Settings
 import java.util.*
 
 
 fun main(args: Array<String>) {
-    val objectUnderTest = ContextAnswerController(ChatGPTAdventure(Settings, Environment()))
+    val objectUnderTest = ContextAnswerController(ChatGPTAdventure(Settings, Gamestate()))
     SetupHelper().startOlama()
 
     val scanner = Scanner(System.`in`)
