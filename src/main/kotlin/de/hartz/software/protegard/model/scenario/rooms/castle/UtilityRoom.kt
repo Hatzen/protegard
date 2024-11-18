@@ -3,6 +3,7 @@ package de.hartz.software.protegard.model.scenario.rooms.castle
 import de.hartz.software.protegard.model.common.Character
 import de.hartz.software.protegard.model.common.Room
 import de.hartz.software.protegard.model.common.RoomConnection
+import de.hartz.software.protegard.model.scenario.RoomObjects
 import de.hartz.software.protegard.model.scenario.Rooms
 
 /*
@@ -16,7 +17,13 @@ class UtilityRoom : Room("UtilityRoom") {
     }
 
     override fun initRoomObjects() {
-
+        objects.addAll(
+            mutableListOf(
+                RoomObjects.ladder,
+                RoomObjects.saltBucket,
+                RoomObjects.workBench,
+                RoomObjects.broom)
+        )
     }
 
     override fun onEnter(character: Character?) {

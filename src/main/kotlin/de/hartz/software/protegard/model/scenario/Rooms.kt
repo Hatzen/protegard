@@ -1,5 +1,6 @@
 package de.hartz.software.protegard.model.scenario
 
+import de.hartz.software.protegard.model.scenario.rooms.Hell
 import de.hartz.software.protegard.model.scenario.rooms.castle.*
 import de.hartz.software.protegard.model.scenario.rooms.village.VillageEntry
 
@@ -26,6 +27,10 @@ object Rooms {
     val towerRightSideOutside = TowerRightSideOutside()
     val utilityRoom = UtilityRoom()
 
+    // Other.
+
+    val hell = Hell()
+
 
     val all = listOf(
         villageEntry,
@@ -47,6 +52,9 @@ object Rooms {
 
 
     fun init() {
-        all.forEach { it.initConnections() }
+        all.forEach {
+            it.initConnections()
+            it.initRoomObjects()
+        }
     }
 }
