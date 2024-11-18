@@ -10,28 +10,28 @@ object Characters {
 
     // Main Characters.
     val AKSEL_BRANDT_THE_GUARD = AkselBrandtTheGuard()
-    val ARVID_HOLM_AGEOLOGIST = ArvidHolmAGeologist()
-    val INGRID_STJERNBERG_AHISTORIAN = IngridStjernbergAHistorian()
+    val ARVID_HOLM_A_GEOLOGIST = ArvidHolmAGeologist()
+    val INGRID_STJERNBERG_A_HISTORIAN = IngridStjernbergAHistorian()
     val JONAS_LINDGREN_THE_MAIN_CHARACTER = JonasLindgrenTheMainCharacter()
-    val RAGNHILD_ERIKSDOTTIR_ANATIVE_SHAMAN = RagnhildEriksdottirANativeShaman()
+    val RAGNHILD_ERIKSDOTTIR_A_NATIVE_SHAMAN = RagnhildEriksdottirANativeShaman()
 
     // Side characters.
     val ASTRID_HANSEN_LADY_OF_THE_CASTLE = AstridHansenLadyOfTheCastle()
-    val KARIN_SVENSSON_AGOUVERNEUR = KarinSvenssonAGouverneur()
-    val KNUT_JORGENSEN_AJANITOR = KnutJorgensenAJanitor()
-    val LARS_FREDRIKSSON_APRIEST = LarsFredrikssonAPriest()
-    val OLAF_HAKON_AHUNTSMAN = OlafHakonAHuntsman()
-    val ROLF_JOHANSEN_AN_ADVENTURER = RolfJohansenAnAdventurer()
+    val KARIN_SVENSSON_A_GOUVERNEUR = KarinSvenssonAGouverneur()
+    val KNUT_JORGENSEN_A_JANITOR = KnutJorgensenAJanitor()
+    val LARS_FREDRIKSSON_A_PRIEST = LarsFredrikssonAPriest()
+    val OLAF_HAKON_A_HUNTSMAN = OlafHakonAHuntsman()
+    val ROLF_JOHANSEN_AN_A_DVENTURER = RolfJohansenAnAdventurer()
     val SIGNE_DAHL_AN_ARTIST = SigneDahlAnArtist()
-    val TOVE_NILSSON_AMAID = ToveNilssonAMaid()
+    val TOVE_NILSSON_A_MAID = ToveNilssonAMaid()
 
     // Side chars village
     val TAXI_DRIVER = TaxiDriver()
-    val BRITA_HOLMQVIST_ADOCTOR = BritaHolmqvistADoctor()
-    val DAGMAR_VIK_APHARMACIST = DagmarVikAPharmacist()
+    val BRITA_HOLMQVIST_A_DOCTOR = BritaHolmqvistADoctor()
+    val DAGMAR_VIK_A_PHARMACIST = DagmarVikAPharmacist()
     val EINAR_OLSEN_THE_VILLAGE_ELDERY = EinarOlsenTheVillageEldery()
-    val ERIK_LUND_AFISHER = ErikLundAFisher()
-    val HELGE_STROM_AFOREIGNER = HelgeStromAForeigner()
+    val ERIK_LUND_A_FISHER = ErikLundAFisher()
+    val HELGE_STROM_A_FOREIGNER = HelgeStromAForeigner()
 
 
 }

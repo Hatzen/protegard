@@ -6,4 +6,4 @@ import de.hartz.software.protegard.model.scenario.Rooms
 /**
  * (Apothekerin): Kennt sich mit Kräutern und traditionellen Heilmethoden aus.
  */
-class DagmarVikAPharmacist : Character("Dagmar Vik", Rooms.villageEntry)
+class DagmarVikAPharmacist : Character("Dagmar Vik", Rooms.villageHospital)

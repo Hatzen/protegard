@@ -3,7 +3,7 @@ package de.hartz.software.protegard.model.scenario.characters.main
 import de.hartz.software.protegard.model.common.Character
 import de.hartz.software.protegard.model.scenario.Rooms
 
-class Narrator : Character("Narrator", Rooms.villageEntry) {
+class Narrator : Character("Narrator", Rooms.hell) {
 
     val DIALOG_ENTRY = """
         Kapitel 1: Ankunft und erste Spuren

@@ -18,6 +18,8 @@ open class Character(
     val firstName: String
     val lastName: String
 
+    var trust: Map<Character, Int> = mapOf()
+
     init {
         firstName = fullname.split(" ").first()
         lastName = fullname.split(" ").last()
@@ -30,7 +32,21 @@ open class Character(
         currentRoom.people.add(this)
     }
 
-    var trust: Map<Character, Int> = mapOf()
+    // TODO: is this really useful? Probably it would be better to have a special Dialog for the start,
+    //   so we are sure there is some sort of greeting and then a simple topic selection..
+    fun addDialog(dialog: Dialog) {
+        val allDialogs = dialogs
+        if (allDialogs == null) {
+            dialogs = dialog
+        } else {
+            val answers = allDialogs.answers
+            if (answers == null) {
+                allDialogs.answers = mutableListOf(dialog)
+            } else {
+                answers.add(dialog)
+            }
+        }
+    }
 
     override fun interact() {
     }
