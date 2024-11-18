@@ -9,6 +9,10 @@ import java.time.LocalDate
 class RandomAnswerController(val chatGPTAdventure: ChatGPTAdventure) {
 
 
+    fun getDescriptionForObject(prompt: String): String {
+        return chatGPTAdventure.getNarratorBasedContent(prompt)
+    }
+
     fun getRandomNewspaper(date: LocalDate): String {
         return chatGPTAdventure.generateStoryIndependentStuff(
             """

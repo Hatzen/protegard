@@ -8,7 +8,7 @@ object CountDownTimer {
 
     init {
         timer(initialDelay = 1000L, period = 1000L) {
-            callbacks.forEach { it.callback() }
+            callbacks.forEach { it.checkAndCallCallback() }
         }
     }
 
@@ -18,7 +18,7 @@ object CountDownTimer {
 class Callback(val callback: Callback.() -> Unit, val seconds: Int = 1, val id: Int = -1) {
     var timer = seconds
 
-    fun callback() {
+    fun checkAndCallCallback() {
         timer--
         if (timer <= 0) {
             callback()

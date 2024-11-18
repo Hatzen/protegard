@@ -9,7 +9,10 @@ class ChatGPTAdventure(private val settings: Settings, private val gamestate: Ga
 
     companion object {
         const val API_URL: String = "http://localhost:11434"
-        const val MODEL = "llama3.2"
+        // very bad with translation "llama3.2"
+        // takes all ram and takes 5 min for simple tasks. "gemma2:27b"
+        // Wont stop adding preamble "gemma2"
+        const val MODEL =  "gemma2" // "llama3.2" // "llama3.2" "gemma2:27b"
         const val STATIC_NO_LLM_ANSWER = "The cake is a lie.."
     }
 
@@ -50,7 +53,7 @@ class ChatGPTAdventure(private val settings: Settings, private val gamestate: Ga
     fun translate(
         message: String,
         languageTo: String = settings.language,
-        languageFrom: String = "detect source language"
+        languageFrom: String = "english" // TODO: This would be nice but does lead to many errors "detect source language"
     ): String {
         return getDynamicResponse { chatService!!.translate(message, languageTo, languageFrom) }
     }
