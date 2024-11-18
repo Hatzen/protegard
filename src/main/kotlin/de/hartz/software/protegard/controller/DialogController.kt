@@ -49,28 +49,33 @@ class DialogController(private var dialog: Dialog, private val view: IView) {
     private fun getAnswer(answers: MutableList<Dialog>) {
         while (true) {
             val choice = view.getChoice()
-            if (choice in 0..answers.size) {
+            if (choice in 0 until answers.size) {
                 if (dialog.onlyOnce) {
-                    val previousDialog = previousDialog
-                    // It is the initial characters dialog.
-                    if (previousDialog == null) {
-                        // TODO: Only once for root dialog should remove this dialog
-                        // dialog.target.dialogs = null
-                        if(dialog.target.dialogs == dialog) {
-                            dialog.target.dialogs = null
-                        } else if (dialog.source.dialogs == dialog) {
-                            dialog.target.dialogs = null
-                        } else {
-                            throw RuntimeException("Dialog did not belong to anyone, could not remove it..")
-                        }
-                    } else {
-                        previousDialog.answers!!.remove(dialog)
-                    }
+                    handleOnlyOnceDialogs()
                 }
                 val nextDialog = answers[choice]
                 continueWithDialog(nextDialog)
                 break
             }
+            view.addText("Thats not a valid choice.")
+        }
+    }
+
+    private fun handleOnlyOnceDialogs() {
+        val previousDialog = previousDialog
+        // It is the initial characters dialog.
+        if (previousDialog == null) {
+            // TODO: Only once for root dialog should remove this dialog
+            // dialog.target.dialogs = null
+            if(dialog.target.dialogs == dialog) {
+                dialog.target.dialogs = null
+            } else if (dialog.source.dialogs == dialog) {
+                dialog.source.dialogs = null
+            } else {
+                throw RuntimeException("Dialog did not belong to anyone, could not remove it..")
+            }
+        } else {
+            previousDialog.answers!!.remove(dialog)
         }
     }
 

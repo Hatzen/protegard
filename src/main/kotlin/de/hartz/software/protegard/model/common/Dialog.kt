@@ -4,7 +4,7 @@ import de.hartz.software.protegard.model.scenario.Characters
 
 open class Dialog(
     val text: String,
-    val answers: MutableList<Dialog>? = null,
+    var answers: MutableList<Dialog>? = null,
     var onlyOnce: Boolean = false,
     var target: Character = Characters.MAIN_CHARACTER,
     var source: Character = Characters.MAIN_CHARACTER,

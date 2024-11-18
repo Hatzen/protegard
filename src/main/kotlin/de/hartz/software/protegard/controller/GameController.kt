@@ -60,7 +60,14 @@ object GameController {
 
     fun startDialog(to: Character, initator: Character = Characters.MAIN_CHARACTER) {
         to.interact()
-        val dialog = to.dialogs
+
+        // Evaluate if this is always useful. Or should we
+        val dialog = if (to == Characters.MAIN_CHARACTER) {
+            initator.dialogs
+        } else {
+            to.dialogs
+        }
+
         if (dialog == null) {
             val answer = randomAnswerController.getRandomAnswerForPeopleWithoutDialog(to)
             addDialog(answer, to)

@@ -41,9 +41,8 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
 
 
     private fun showIntro() {
-        tellUser("Type:")
-        tellUser("Help or h to show commands")
-        tellUser("Exit or x to exit program")
+        tellUser("Type 'Help' or h to show commands")
+        tellUser("Type 'Exit' or x to exit program")
         tellUser("The Game begins..")
     }
 
@@ -51,7 +50,7 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
         val command = commandsAndParameters.first()
         val foundCommand =
             TextCommands.entries.find { it.value.key.lowercase() == command || it.value.shortcut.lowercase() == command }
-        requireNotNull(foundCommand, { "$command is not a valid command. see h" })
+        requireNotNull(foundCommand, { "'$command' is not a valid command. see h" })
         val parameters = commandsAndParameters.subList(1, commandsAndParameters.size)
         val validParameterCount =
             IntRange(foundCommand.value.numberOfIdentifiersMin, foundCommand.value.numberOfIdentifiersMax)
@@ -126,18 +125,19 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
 
     private fun printHelp() {
         tellUser("Type any of the following commands not case sensitive, either full or the shortcut letters. The parameter are ids of rooms, items or people. Not case sensitiv as well. Especially you do not have to type the full name, but only the first letters until it is not ambigous.")
+        tellUser("When into a conversation type the (row) number of the answer and press enter afterwards to select it.")
         for (x in TextCommands.entries) {
-            tellUser("Command " + x.value.key + " shortcut " + x.value.shortcut + " minParameter " + x.value.numberOfIdentifiersMin + " maxParameter " + x.value.numberOfIdentifiersMax)
+            tellUser("Command '" + x.value.key + "' shortcut " + x.value.shortcut + " minParameter " + x.value.numberOfIdentifiersMin + " maxParameter " + x.value.numberOfIdentifiersMax)
         }
     }
 
     private fun printIdentifiables(list: List<Identifieable>) {
         tellUser("Available:")
-        tellUser(list.map { it.fullname }.joinToString { "$it, " })
+        tellUser(list.map { it.fullname }.joinToString { "'$it', " })
     }
 
     override fun addText(text: String, source: Identifieable) {
-        tellUser(source.fullname + ": " + text)
+        tellUser("'${source.fullname}': $text")
     }
 
     override fun addText(text: String) {
@@ -156,18 +156,10 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
     }
 
     private fun tellUser(text: String) {
-        // TODO:  //translator.translate(text) leads to nullpointer for some reason
-        /*
-        java.lang.NullPointerException: Cannot invoke "dev.langchain4j.model.output.Response.content()" because "response" is null
-            at dev.langchain4j.service.AiServiceStreamingResponseHandler.onComplete(AiServiceStreamingResponseHandler.java:75)
-            at dev.langchain4j.model.ollama.OllamaClient$2.onResponse(OllamaClient.java:180)
-            at retrofit2.OkHttpCall$1.onResponse(OkHttpCall.java:161)
-            at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:519)
-            at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
-            at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
-            at java.base/java.lang.Thread.run(Thread.java:1583)
-         */
-        val translatedText = translator.translate(text) //
+        // TODO: translating makes only issues.
+        //   https://community.openai.com/t/anyone-doing-successful-translations-with-gpt-3-5/326636/12
+        // val translatedText = translator.translate(text)
+        val translatedText = translator.translate(text)
         println(translatedText)
     }
 }
