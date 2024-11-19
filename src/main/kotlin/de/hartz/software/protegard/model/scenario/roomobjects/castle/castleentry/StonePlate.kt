@@ -1,7 +1,7 @@
 package de.hartz.software.protegard.model.scenario.roomobjects.castle.castleentry
 
 import de.hartz.software.protegard.controller.GameController
-import de.hartz.software.protegard.model.common.Dialog
+import de.hartz.software.protegard.model.common.dialog.Dialog
 import de.hartz.software.protegard.model.common.RoomObject
 import de.hartz.software.protegard.model.milestones.Milestone
 import de.hartz.software.protegard.model.scenario.Characters

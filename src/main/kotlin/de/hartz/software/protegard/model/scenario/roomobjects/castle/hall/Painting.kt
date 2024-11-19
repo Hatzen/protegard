@@ -6,7 +6,7 @@ import de.hartz.software.protegard.model.scenario.Characters
 
 class HallPainting(name: String) : RoomObject(name) {
     val description: String by lazy {
-        GameController.randomAnswerController.getDescriptionForObject("A painting within an old castle hall in 1920, painted years ago.")
+        GameController.randomAnswerController.getDescriptionForObject("A painting within an old castle hall in 1920, painted years ago. It shows $name")
     }
 
     override fun interact() {

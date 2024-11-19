@@ -1,7 +1,7 @@
 package de.hartz.software.protegard.model.scenario.characters.side.village
 
 import de.hartz.software.protegard.model.common.Character
-import de.hartz.software.protegard.model.common.Dialog
+import de.hartz.software.protegard.model.common.dialog.Dialog
 import de.hartz.software.protegard.model.scenario.Rooms
 
 class TaxiDriver : Character("Taxi Driver", Rooms.villageEntry) {

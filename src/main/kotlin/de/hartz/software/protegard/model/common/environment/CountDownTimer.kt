@@ -2,9 +2,14 @@ package de.hartz.software.protegard.model.common.environment
 
 import kotlin.concurrent.timer
 
+object CountDownCallbackIds {
+    val WATCH = 1
+    val RING_THE_BELLS_GUARD_ANNOYED = 2
+}
+
 object CountDownTimer {
 
-    val callbacks: MutableSet<Callback> = mutableSetOf()
+    val callbacks: MutableSet<CountDownCallback> = mutableSetOf()
 
     init {
         timer(initialDelay = 1000L, period = 1000L) {
@@ -15,7 +20,7 @@ object CountDownTimer {
 
 }
 
-class Callback(val callback: Callback.() -> Unit, val seconds: Int = 1, val id: Int = -1) {
+class CountDownCallback(val callback: CountDownCallback.() -> Unit, val seconds: Int = 1, val id: Int = -1) {
     var timer = seconds
 
     fun checkAndCallCallback() {
@@ -31,7 +36,7 @@ class Callback(val callback: Callback.() -> Unit, val seconds: Int = 1, val id: 
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other is Callback) {
+        if (other is CountDownCallback) {
             return other.id == id
         }
         return false

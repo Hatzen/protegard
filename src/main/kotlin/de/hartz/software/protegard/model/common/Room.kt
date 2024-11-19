@@ -28,7 +28,7 @@ open class RoomConnection(
     val travelMessage: () -> String? = { null }
 ) : Identifieable {
     open fun canTravel(): Boolean {
-        return travelMessage != null
+        return travelMessage == null
     }
 }
 

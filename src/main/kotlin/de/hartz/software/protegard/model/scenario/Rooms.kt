@@ -21,11 +21,13 @@ object Rooms {
     val library = Library()
     val lobbyRoom = LobbyRoom()
     val pantry = Pantry()
-    val sleepingroom = Sleepingroom()
     val secretStudyroom = SecretStudyroom()
     val studyroom = Studyroom()
     val towerRightSideOutside = TowerRightSideOutside()
     val utilityRoom = UtilityRoom()
+    val sleepingroom = Sleepingroom()
+    val castleLadySleepingroom = CastleLadySleepingroom()
+    val serviceSleepingroom = ServiceSleepingroom()
 
     // Other.
 

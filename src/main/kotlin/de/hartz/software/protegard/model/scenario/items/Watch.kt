@@ -3,7 +3,8 @@ package de.hartz.software.protegard.model.scenario.items
 import de.hartz.software.protegard.controller.GameController
 import de.hartz.software.protegard.extensions.format
 import de.hartz.software.protegard.model.common.Item
-import de.hartz.software.protegard.model.common.environment.Callback
+import de.hartz.software.protegard.model.common.environment.CountDownCallback
+import de.hartz.software.protegard.model.common.environment.CountDownCallbackIds
 import de.hartz.software.protegard.model.common.environment.CountDownTimer
 import de.hartz.software.protegard.model.common.environment.Hue
 import java.time.LocalTime
@@ -14,15 +15,15 @@ class Watch : Item("Watch") {
     var isCounting = true
     var lastTime = LocalTime.now()
     var delay: Long = 0
-    val callback: Callback
+    val callback: CountDownCallback
 
     init {
-        callback = Callback({
+        callback = CountDownCallback({
             val currentTime = GameController.environment.refreshAndGetTime()
             lastTime = currentTime.toLocalTime()
             isCounting = false
             reset()
-        }, 60, 1)
+        }, 60, CountDownCallbackIds.WATCH)
         CountDownTimer.callbacks.add(callback)
     }
 

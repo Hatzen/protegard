@@ -10,5 +10,7 @@ class Mirror : RoomObject("Mirror") {
             "The mirror is clean and of good quality still it has some stains.",
             Characters.NARRATOR
         )
+
+        // TODO: Someone could fall or been thrown against it, so it breaks and we could use splitter to bound light into the chapel to activate something
     }
 }

@@ -1,7 +1,9 @@
 package de.hartz.software.protegard.model.common
 
+import de.hartz.software.protegard.model.common.dialog.Dialog
 import de.hartz.software.protegard.model.interfaces.Identifieable
 import de.hartz.software.protegard.model.interfaces.Interactable
+import de.hartz.software.protegard.model.scenario.Characters
 
 open class Character(
     final override var fullname: String,
@@ -18,7 +20,7 @@ open class Character(
     val firstName: String
     val lastName: String
 
-    var trust: Map<Character, Int> = mapOf()
+    var trust: MutableMap<Character, Int> = mutableMapOf()
 
     init {
         firstName = fullname.split(" ").first()
@@ -46,6 +48,10 @@ open class Character(
                 answers.add(dialog)
             }
         }
+    }
+
+    fun changeTrust(value: Int, character: Character = Characters.MAIN_CHARACTER) {
+        trust.merge(character, value, Integer::sum)
     }
 
     override fun interact() {

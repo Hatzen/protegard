@@ -7,7 +7,7 @@ import de.hartz.software.protegard.model.scenario.Rooms
 
 class Bathroom : Room("Bathroom") {
     override fun initConnections() {
-        connections.add(RoomConnection("enter sleeping room", Rooms.sleepingroom))
+        connections.add(RoomConnection("enter hall", Rooms.hall))
     }
 
     override fun initRoomObjects() {

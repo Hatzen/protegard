@@ -1,5 +1,6 @@
-package de.hartz.software.protegard.model.common
+package de.hartz.software.protegard.model.common.dialog
 
+import de.hartz.software.protegard.model.common.Character
 import de.hartz.software.protegard.model.scenario.Characters
 
 open class Dialog(

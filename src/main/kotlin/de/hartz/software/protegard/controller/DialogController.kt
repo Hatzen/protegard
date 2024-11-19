@@ -1,6 +1,6 @@
 package de.hartz.software.protegard.controller
 
-import de.hartz.software.protegard.model.common.Dialog
+import de.hartz.software.protegard.model.common.dialog.Dialog
 
 class DialogController(private var dialog: Dialog, private val view: IView) {
 

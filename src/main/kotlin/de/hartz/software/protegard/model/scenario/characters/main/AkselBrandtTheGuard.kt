@@ -2,7 +2,7 @@ package de.hartz.software.protegard.model.scenario.characters.main
 
 import de.hartz.software.protegard.controller.GameController
 import de.hartz.software.protegard.model.common.Character
-import de.hartz.software.protegard.model.common.Dialog
+import de.hartz.software.protegard.model.common.dialog.Dialog
 import de.hartz.software.protegard.model.scenario.Characters
 import de.hartz.software.protegard.model.scenario.Rooms
 
