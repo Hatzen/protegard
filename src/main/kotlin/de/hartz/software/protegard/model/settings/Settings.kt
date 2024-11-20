@@ -4,6 +4,10 @@ object Settings {
 
     const val DEFAULT_LANGUAGE = "english"
 
-    var language: String = DEFAULT_LANGUAGE
     var useLLMs = true
+
+    //
+    var useEffectsAndUi = true
+    var translate = false
+    var language: String = DEFAULT_LANGUAGE
 }

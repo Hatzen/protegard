@@ -6,10 +6,10 @@ import de.hartz.software.protegard.model.scenario.Rooms
 class Narrator : Character("Narrator", Rooms.hell) {
 
     val DIALOG_ENTRY = """
-        Kapitel 1: Ankunft und erste Spuren
-        Es ist das Jahr 1920, und Jonas Lindgren hat eine Einladung von einem entfernten Verwandten erhalten, der im Besitz eines alten Schlosses ist, das isoliert in den Bergen Skandinaviens liegt. Das Schloss hat eine lange und düstere Geschichte, und es wird gemunkelt, dass sich dort alte Geheimnisse verbergen. Jonas, ein neugieriger Gelehrter mit einer Leidenschaft für Geschichte, ist von der Idee fasziniert, die Schriften und Artefakte dieses Ortes zu studieren. Er hat keine Ahnung von der Seuche, die das nahegelegene Dorf heimgesucht hat – seine Reise ist rein akademisch motiviert.
-
-        Als er jedoch in dem Dorf ankommt, merkt er schnell, dass etwas nicht stimmt. Die Bewohner sind krank, wirken verwirrt und manche scheinen geistig umnachtet zu sein. Sie sprechen von einer „Krankheit“, die die Gedanken korrumpiert und die Kranken in den Wahnsinn treibt. Doch Jonas ist entschlossen, das Schloss zu erreichen, da er glaubt, dass dort Antworten auf seine historischen Fragen liegen – vielleicht sogar auf die Ursache der Seuche.
-    """.trimIndent()
+        Chapter 1: Arrival and first traces
+        It is 1920, and Jonas Lindgren has received an invitation from a distant relative who owns an old castle isolated in the mountains of Scandinavia. The castle has a long and dark history, and it is rumored that ancient secrets are hidden there. Jonas, a curious scholar with a passion for history, is intrigued by the idea of studying the writings and artifacts of this place. He has no idea about the plague that has struck the nearby village - his journey is purely academic.
+        
+        However, when he arrives in the village, he quickly realizes that something is wrong. The inhabitants are ill, seem confused and some appear to be mentally deranged. They speak of a “disease” that corrupts their minds and drives the sick to madness. But Jonas is determined to reach the castle, as he believes that answers to his historical questions lie there - perhaps even the cause of the plague.
+        """.trimIndent()
 
 }

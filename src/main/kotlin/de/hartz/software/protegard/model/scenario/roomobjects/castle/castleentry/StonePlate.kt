@@ -1,14 +1,15 @@
 package de.hartz.software.protegard.model.scenario.roomobjects.castle.castleentry
 
 import de.hartz.software.protegard.controller.GameController
-import de.hartz.software.protegard.model.common.dialog.Dialog
 import de.hartz.software.protegard.model.common.RoomObject
+import de.hartz.software.protegard.model.common.dialog.Dialog
 import de.hartz.software.protegard.model.milestones.Milestone
 import de.hartz.software.protegard.model.scenario.Characters
 
 class StonePlate : RoomObject("Well") {
     override fun interact() {
-        val solution = "„Þetta hús er reist til heiðurs Guð konungsins“, means „This house is built in honor of God the King.“)."
+        val solution =
+            "„Þetta hús er reist til heiðurs Guð konungsins“, means „This house is built in honor of God the de.hartz.software.protegard.controller.puzzels.King.“)."
         if (Milestone.CASTLE_CAN_READ_STONE_PLATE.reached) {
             // "ᛒᛁᛏᛦ᛬ᛅᛁᛋ᛬ᛋᛁᛏ᛬ („Bitr aiss sit“) – „Geh stark deinen Weg“..",
             // „Þetta hús er reist til heiðurs Guð konungsins“ („Dieses Haus ist zu Ehren des Königs Gottes errichtet“).

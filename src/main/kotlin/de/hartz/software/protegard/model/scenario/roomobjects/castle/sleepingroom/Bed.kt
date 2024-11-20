@@ -6,8 +6,9 @@ import de.hartz.software.protegard.model.scenario.Characters
 
 class Bed : RoomObject("Bed") {
     override fun interact() {
+        GameController.environment.currentGameDateTime = GameController.environment.currentGameDateTime.plusHours(12)
         GameController.addDialog(
-            "My bed to rest.",
+            "You feel well rested.",
             Characters.NARRATOR
         )
     }

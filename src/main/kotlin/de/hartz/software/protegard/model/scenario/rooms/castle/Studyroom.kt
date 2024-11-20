@@ -9,6 +9,7 @@ import de.hartz.software.protegard.model.common.dialog.Dialog
 import de.hartz.software.protegard.model.milestones.Milestone
 import de.hartz.software.protegard.model.scenario.Characters
 import de.hartz.software.protegard.model.scenario.Items
+import de.hartz.software.protegard.model.scenario.RoomObjects
 import de.hartz.software.protegard.model.scenario.Rooms
 
 class Studyroom : Room("Studyroom") {
@@ -23,7 +24,11 @@ class Studyroom : Room("Studyroom") {
     }
 
     override fun initRoomObjects() {
-
+        objects.addAll(
+            mutableListOf(
+                RoomObjects.desk,
+                RoomObjects.keyhole
+            ))
     }
 
     override fun onEnter(character: Character?) {

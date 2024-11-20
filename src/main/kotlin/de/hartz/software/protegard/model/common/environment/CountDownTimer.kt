@@ -5,6 +5,7 @@ import kotlin.concurrent.timer
 object CountDownCallbackIds {
     val WATCH = 1
     val RING_THE_BELLS_GUARD_ANNOYED = 2
+    val WELL_CLEANING = 3
 }
 
 object CountDownTimer {

@@ -6,6 +6,7 @@ import de.hartz.software.protegard.model.settings.Settings
 import kotlin.math.max
 
 fun main(args: Array<String>) {
+    println("Loading application.. Might take a minute when using llms.")
     LoggerUtil.init()
     setupSettings(args)
     GameController.init()
@@ -13,6 +14,7 @@ fun main(args: Array<String>) {
 }
 
 fun setupSettings(args: Array<String>) {
+    // TODO: Implement further settings
     var indexOf = max(args.indexOf("-a"), args.indexOf("useAi"))
     if (indexOf != -1) {
         if (args[indexOf + 1] == "false") {

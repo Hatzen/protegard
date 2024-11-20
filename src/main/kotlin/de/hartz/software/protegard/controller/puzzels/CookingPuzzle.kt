@@ -1,14 +1,37 @@
-package controller.puzzels
+package de.hartz.software.protegard.controller.puzzels
 
-import java.util.*
+import de.hartz.software.protegard.controller.IView
+import de.hartz.software.protegard.model.scenario.Characters
 
-// TODO: Build proper api, translate options.
 object CookingPuzzle {
+    enum class Score {
+        PERFECT,
+        NICE,
+        OK,
+        DISGUSTING
+    }
+
+    const val PASTA = "Pasta"
+    const val TOMATO_SAUCE = "Tomato Sauce"
+    const val CHEESE = "Cheese"
+    const val OLIVES = "Olives"
+    const val HAM = "Ham"
+    const val MUSHROOMS = "Mushrooms"
+    const val GARLIC = "Garlic"
+    const val BASIL = "Basil"
+    const val CHOCOLATE = "Chocolate"
+    const val STRAWBERRIES = "Strawberries"
+    const val LEMON = "Lemon"
+    const val SALT = "Salt"
+    const val PEPPER = "Pepper"
+    const val CHILI = "CHILI"
+    const val OLIVE_OIL = "Olive Oil"
+
     // Liste der verfügbaren Zutaten
     private val INGREDIENTS: List<String> = mutableListOf(
-        "Nudeln", "Tomatensauce", "Käse", "Oliven", "Schinken",
-        "Pilze", "Knoblauch", "Basilikum", "Schokolade", "Erdbeeren",
-        "Zitrone", "Salz", "Pfeffer", "Chili", "Olivenöl"
+        PASTA, TOMATO_SAUCE, CHEESE, OLIVES, HAM,
+        MUSHROOMS, GARLIC, BASIL, CHOCOLATE, STRAWBERRIES,
+        LEMON, SALT, PEPPER, CHILI, OLIVE_OIL
     )
 
     // Methode zur Bewertung des Gerichts basierend auf der Zutatenliste
@@ -17,98 +40,63 @@ object CookingPuzzle {
         var score = 0
 
         // Gute Kombinationen, die die Punktzahl erhöhen
-        if (selectedIngredients.contains("Nudeln") && selectedIngredients.contains("Tomatensauce")) {
+        if (selectedIngredients.contains(PASTA) && selectedIngredients.contains(TOMATO_SAUCE)) {
             score += 10
         }
-        if (selectedIngredients.contains("Käse") && selectedIngredients.contains("Oliven")) {
+        if (selectedIngredients.contains(CHEESE) && selectedIngredients.contains(OLIVES)) {
             score += 8
         }
-        if (selectedIngredients.contains("Knoblauch") && selectedIngredients.contains("Basilikum")) {
+        if (selectedIngredients.contains(GARLIC) && selectedIngredients.contains(BASIL)) {
             score += 7
         }
-        if (selectedIngredients.contains("Pilze") && selectedIngredients.contains("Olivenöl")) {
+        if (selectedIngredients.contains(MUSHROOMS) && selectedIngredients.contains(OLIVE_OIL)) {
             score += 5
         }
-        if (selectedIngredients.contains("Schinken") && selectedIngredients.contains("Pfeffer")) {
+        if (selectedIngredients.contains(HAM) && selectedIngredients.contains(PEPPER)) {
             score += 6
         }
-        if (selectedIngredients.contains("Zitrone") && selectedIngredients.contains("Chili")) {
+        if (selectedIngredients.contains(LEMON) && selectedIngredients.contains(CHILI)) {
             score += 4
         }
 
 
         // Beste Kombination für ein sehr leckeres Gericht (alle Zutaten sollten enthalten sein)
         val bestCombination: List<String> = mutableListOf(
-            "Nudeln", "Tomatensauce", "Käse", "Oliven",
-            "Schinken", "Knoblauch", "Basilikum", "Olivenöl"
+            PASTA, TOMATO_SAUCE, CHEESE, OLIVES,
+            HAM, GARLIC, BASIL, OLIVE_OIL
         )
         if (selectedIngredients.containsAll(bestCombination)) {
             score += 30
         }
 
         // Schlechte Kombinationen, die die Punktzahl reduzieren
-        if (selectedIngredients.contains("Nudeln") && selectedIngredients.contains("Schokolade")) {
+        if (selectedIngredients.contains(PASTA) && selectedIngredients.contains(CHOCOLATE)) {
             score -= 15 // Nudeln mit Schokolade schmecken nicht gut
         }
-        if (selectedIngredients.contains("Erdbeeren") && selectedIngredients.contains("Pilze")) {
+        if (selectedIngredients.contains(STRAWBERRIES) && selectedIngredients.contains(MUSHROOMS)) {
             score -= 10 // Erdbeeren und Pilze passen nicht gut zusammen
         }
-        if (selectedIngredients.contains("Zitrone") && selectedIngredients.contains("Käse")) {
+        if (selectedIngredients.contains(LEMON) && selectedIngredients.contains(CHEESE)) {
             score -= 5 // Zitrone und Käse ist keine gute Kombination
         }
 
         return score
     }
 
-    // Hauptmethode des Programms
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val scanner = Scanner(System.`in`)
-        val selectedIngredients: MutableList<String> = ArrayList()
+    fun start(view: IView): Score {
+        view.addText("Time to make tasty pasta, lets select the needed ingredients..", Characters.NARRATOR)
 
-        println("Willkommen zum Kochrätsel! Wähle bis zu 8 Zutaten, um ein leckeres Gericht zuzubereiten.")
-        println("Verfügbare Zutaten: " + INGREDIENTS)
-        println("Gib eine Zutat nach der anderen ein (oder 'fertig' um die Auswahl zu beenden):")
+        val ingredient = view.getMultipleChoice(INGREDIENTS)
+        val score = evaluateDish(ingredient)
 
-        while (selectedIngredients.size < 8) {
-            print("Zutat: ")
-            val input = scanner.nextLine().trim { it <= ' ' }
-
-            if (input.equals("fertig", ignoreCase = true)) {
-                break
-            }
-
-            if (!INGREDIENTS.contains(input)) {
-                println("Ungültige Zutat. Wähle eine der verfügbaren Zutaten.")
-                continue
-            }
-
-            if (selectedIngredients.contains(input)) {
-                println("Du hast diese Zutat bereits ausgewählt.")
-                continue
-            }
-
-            selectedIngredients.add(input)
-            println("Zutat $input hinzugefügt.")
-        }
-
-        // Bewertung des Gerichts
-        val score = evaluateDish(selectedIngredients)
-
-        // Rückmeldung basierend auf der Punktzahl
-        if (score >= 30) {
-            println("Fantastisch! Dein Gericht ist ein kulinarisches Meisterwerk.")
+        return if (score >= 30) {
+            Score.PERFECT
         } else if (score >= 15) {
-            println("Gut gemacht! Dein Gericht ist lecker.")
+            Score.NICE
         } else if (score > 0) {
-            println("Es ist essbar, aber nicht gerade ein Genuss.")
+            Score.OK
         } else {
-            println("Leider ist dein Gericht ungenießbar.")
+            Score.DISGUSTING
         }
-
-        println("Deine Punktzahl: $score")
-        println("Ausgewählte Zutaten: $selectedIngredients")
-
-        scanner.close()
     }
 }

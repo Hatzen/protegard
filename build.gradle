@@ -1,5 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.9.23'
+    id  'application'
 }
 
 group = 'de.hartz.software.protegard'
@@ -18,7 +19,6 @@ dependencies {
     implementation 'dev.langchain4j:langchain4j-open-ai:0.35.0'
     implementation 'dev.langchain4j:langchain4j-ollama:0.35.0'
     implementation 'dev.langchain4j:langchain4j:0.35.0'
-
 }
 
 test {
@@ -26,4 +26,9 @@ test {
 }
 kotlin {
     jvmToolchain(17)
+}
+
+
+application {
+    mainClass.set("MainKt")
 }

@@ -7,14 +7,15 @@ import de.hartz.software.protegard.controller.GameController.lookAround
 import de.hartz.software.protegard.controller.IView
 import de.hartz.software.protegard.controller.generative.ChatGPTAdventure
 import de.hartz.software.protegard.model.interfaces.Identifieable
+import de.hartz.software.protegard.model.settings.Settings
 import de.hartz.software.protegard.view.text.TextCommands.*
-import okhttp3.internal.connection.RealCall
+import de.hartz.software.protegard.view.ui.ChapterAnimation
 import java.util.*
-import java.util.concurrent.ThreadPoolExecutor
 
 class TextIO(val translator: ChatGPTAdventure) : IView {
     private val scanner: Scanner = Scanner(System.`in`)
     private var scanInput = true
+    private val realTimePrinter = RealTimePrinter()
 
     override fun listenForUserInput() {
         showIntro()
@@ -44,6 +45,10 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
         tellUser("Type 'Help' or h to show commands")
         tellUser("Type 'Exit' or x to exit program")
         tellUser("The Game begins..")
+
+        if (Settings.useEffectsAndUi) {
+            ChapterAnimation.showChapter(1)
+        }
     }
 
     private fun handleChoice(commandsAndParameters: List<String>) {
@@ -63,6 +68,7 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
                 scanInput = false
                 GameController.exit()
             }
+
             HELP -> printHelp()
             //SAVE -> TODO()
             // LOAD -> TODO()
@@ -75,6 +81,7 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
             SPEAKTO -> {
                 val character = getAllPeople().find { isMatch(it, parameters[0]) }
                 requireNotNull(character)
+                // TODO: Easier to just interact?
                 GameController.startDialog(character)
             }
 
@@ -124,6 +131,8 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
     }
 
     private fun printHelp() {
+        val objective = GameController.getCurrentObjective()
+        tellUser("Your current Objective is: $objective")
         tellUser("Type any of the following commands not case sensitive, either full or the shortcut letters. The parameter are ids of rooms, items or people. Not case sensitiv as well. Especially you do not have to type the full name, but only the first letters until it is not ambigous.")
         tellUser("When into a conversation type the (row) number of the answer and press enter afterwards to select it.")
         for (x in TextCommands.entries) {
@@ -145,6 +154,32 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
     }
 
 
+    override fun <T> getMultipleChoice(choice: List<T>): List<T> {
+        do {
+            try {
+                addText("Write all numbers comma seperated to select items")
+                var choiceText = ""
+                for (i in choice.indices)
+                    choiceText += "$i. $choice"
+                addText(choiceText)
+
+                // TODO: This filters invalid indexes but maybe retry would be better?
+                return mapIndexesFromString(scanner.nextLine(), choice)
+            } catch (ex: NoSuchElementException) {
+                tellUser("Not a valid choice, please type just the number with a comma.")
+            }
+        } while (true)
+    }
+
+    private fun <T> mapIndexesFromString(input: String, list: List<T>): List<T> {
+        val indices = input.split(",")
+            .mapNotNull { it.trim().toIntOrNull() }
+            .filter { it in list.indices }
+
+        return indices.map { list[it] }
+    }
+
+
     override fun getChoice(): Int {
         do {
             try {
@@ -159,7 +194,15 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
         // TODO: translating makes only issues.
         //   https://community.openai.com/t/anyone-doing-successful-translations-with-gpt-3-5/326636/12
         // val translatedText = translator.translate(text)
-        val translatedText = translator.translate(text)
-        println(translatedText)
+        val translatedText = if (Settings.translate) {
+            translator.translate(text)
+        } else {
+            text
+        }
+        if (Settings.useEffectsAndUi) {
+            realTimePrinter.printMessage(translatedText)
+        } else {
+            println(translatedText)
+        }
     }
 }

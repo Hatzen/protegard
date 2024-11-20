@@ -1,6 +1,7 @@
 package de.hartz.software.protegard.model.scenario.characters.side
 
 import de.hartz.software.protegard.model.common.Character
+import de.hartz.software.protegard.model.common.dialog.Dialog
 import de.hartz.software.protegard.model.scenario.Rooms
 
 /**
@@ -8,6 +9,48 @@ import de.hartz.software.protegard.model.scenario.Rooms
  */
 class ToveNilssonAMaid : Character("Tove Nilsson", Rooms.kitchen) {
 
-}
+    val KILL_THE_MOUSE = Dialog(
+        """
+                Hello Tove, i would like to help you! Is there anything i can do for you?
+                """.trimIndent(),
+        Dialog(
+            """
+                    Thats a quite uncommon thing, but indeed there is something, i am afraid of rats and some where in the kitchen or pantry there is some. Can you please get rid of it?
+                    """.trimIndent(),
+            Dialog(
+                """
+                    Consider it as already done.
+                    """.trimIndent(),
+                target = this,
+            ),
+            source = this,
+        ),
+        target = this,
+        onlyOnce = true
+    )
 
-// TODO: For MISSION_TO_GET_KEY_TO_STUDY_ROOM get cooking riddle
+    val MOUSE_DEAD = Dialog(
+        """
+            The mouse is dead.
+                    """.trimIndent(),
+        callback = { changeTrust(10) },
+        target = this,
+    )
+
+    init {
+        dialogs = Dialog(
+            """
+            Hello Sir, my name is Tove. Nice to meet you. How can i help you?
+            """.trimIndent(),
+            Dialog(
+                """
+                Hello Tove, my name is Jonas. I am fine. thank you.
+                """.trimIndent(),
+                target = this,
+                onlyOnce = true
+            ),
+            source = this
+        )
+    }
+
+}

@@ -12,6 +12,7 @@ import de.hartz.software.protegard.model.scenario.Rooms
 import de.hartz.software.protegard.model.scenario.Scenario
 import de.hartz.software.protegard.model.settings.Settings
 import de.hartz.software.protegard.view.text.TextIO
+import java.lang.Thread.sleep
 import kotlin.system.exitProcess
 
 object GameController {
@@ -39,10 +40,17 @@ object GameController {
 
     fun startGameFromBeginning() {
         // TODO: save / load
-        Scenario().firstIntro()
+        Thread {
+            sleep(1000)
+            Scenario().firstIntro()
+        }.start()
 
         // Must be last line as it will be blocking.
         view.listenForUserInput()
+    }
+
+    fun getCurrentObjective(): String {
+        return ObjectiveController.getCurrentObjective()
     }
 
     fun goto(connection: RoomConnection, character: Character = Characters.MAIN_CHARACTER) {

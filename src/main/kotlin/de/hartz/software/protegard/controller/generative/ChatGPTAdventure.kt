@@ -11,8 +11,8 @@ class ChatGPTAdventure(private val settings: Settings, private val gamestate: Ga
         const val API_URL: String = "http://localhost:11434"
         // very bad with translation "llama3.2"
         // takes all ram and takes 5 min for simple tasks. "gemma2:27b"
-        // Wont stop adding preamble "gemma2"
-        const val MODEL =  "gemma2" // "llama3.2" // "llama3.2" "gemma2:27b"
+        // Wont stop adding preamble and takes long to answer.. "gemma2"
+        const val MODEL =  "llama3.2" // "gemma2" // "llama3.2" // "llama3.2" "gemma2:27b"
         const val STATIC_NO_LLM_ANSWER = "The cake is a lie.."
     }
 

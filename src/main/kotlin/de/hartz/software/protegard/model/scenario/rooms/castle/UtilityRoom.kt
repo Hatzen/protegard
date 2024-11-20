@@ -22,7 +22,9 @@ class UtilityRoom : Room("UtilityRoom") {
                 RoomObjects.ladder,
                 RoomObjects.saltBucket,
                 RoomObjects.workBench,
-                RoomObjects.broom)
+                RoomObjects.brush,
+                RoomObjects.broom
+            )
         )
     }
 

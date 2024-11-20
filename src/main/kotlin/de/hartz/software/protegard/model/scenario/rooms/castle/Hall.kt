@@ -7,6 +7,7 @@ import de.hartz.software.protegard.model.common.RoomConnection
 import de.hartz.software.protegard.model.common.dialog.Dialog
 import de.hartz.software.protegard.model.milestones.Milestone
 import de.hartz.software.protegard.model.scenario.Characters
+import de.hartz.software.protegard.model.scenario.RoomObjects
 import de.hartz.software.protegard.model.scenario.Rooms
 
 class Hall : Room("Hall") {
@@ -29,7 +30,15 @@ class Hall : Room("Hall") {
     }
 
     override fun initRoomObjects() {
-
+        objects.addAll(
+            mutableListOf(
+                RoomObjects.chandelier,
+                RoomObjects.hallPaintingStars,
+                RoomObjects.hallPaintingDarkforest,
+                RoomObjects.hallPaintingSirHansen,
+                RoomObjects.sofa,
+                RoomObjects.tapestries
+            ))
     }
 
     override fun onEnter(character: Character?) {

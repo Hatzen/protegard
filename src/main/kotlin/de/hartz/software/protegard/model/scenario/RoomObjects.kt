@@ -34,15 +34,11 @@ import de.hartz.software.protegard.model.scenario.roomobjects.castle.studyroom.D
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.studyroom.Keyhole
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.tower.PigeonCoop
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.tower.WindChimes
-import de.hartz.software.protegard.model.scenario.roomobjects.castle.utilityroom.Broom
-import de.hartz.software.protegard.model.scenario.roomobjects.castle.utilityroom.Ladder
-import de.hartz.software.protegard.model.scenario.roomobjects.castle.utilityroom.SaltBucket
-import de.hartz.software.protegard.model.scenario.roomobjects.castle.utilityroom.Workbench
+import de.hartz.software.protegard.model.scenario.roomobjects.castle.utilityroom.*
 import de.hartz.software.protegard.model.scenario.roomobjects.village.villageentry.Bench
 import de.hartz.software.protegard.model.scenario.roomobjects.village.villageentry.NewspaperStore
 import de.hartz.software.protegard.model.scenario.roomobjects.village.villageentry.RareCoin
 
-// TODO: Do we need this?
 object RoomObjects {
     // Village entry.
     val bench = Bench()
@@ -65,6 +61,7 @@ object RoomObjects {
 
     // Utilityroom
     val broom = Broom()
+    val brush = Brush()
     val ladder = Ladder()
     val saltBucket = SaltBucket()
     val workBench = Workbench()

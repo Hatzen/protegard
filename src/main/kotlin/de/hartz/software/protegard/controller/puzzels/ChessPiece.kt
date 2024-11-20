@@ -1,3 +1,5 @@
+package de.hartz.software.protegard.controller.puzzels
+
 import java.util.*
 
 abstract class Piece(val color: String) {
@@ -121,19 +123,19 @@ class SimpleAI(private val board: ChessBoard, private val color: String) {
         if (validMoves.isNotEmpty()) {
             val move = validMoves.random()
             board.movePiece(move.first, move.second)
-            println("AI moves: ${move.first} -> ${move.second}")
+            println("Enemy moves: ${move.first} -> ${move.second}")
         }
     }
 }
 
-fun main() {
+fun startChessGame() {
     val board = ChessBoard()
     val ai = SimpleAI(board, "black")
     while (true) {
         board.printBoard()
         println("${board.currentTurn.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}'s turn. Enter your move (e.g., e2 e4):")
         val input = readlnOrNull() ?: break
-        if (input.lowercase() == "quit") break
+        if (input.lowercase() == "x") break
         try {
             val (start, end) = input.split(" ").map { it.toPosition() }
             board.movePiece(start, end)
