@@ -12,7 +12,6 @@ import de.hartz.software.protegard.model.scenario.Rooms
 import de.hartz.software.protegard.model.scenario.Scenario
 import de.hartz.software.protegard.model.settings.Settings
 import de.hartz.software.protegard.view.text.TextIO
-import java.lang.Thread.sleep
 import kotlin.system.exitProcess
 
 object GameController {
@@ -40,11 +39,14 @@ object GameController {
 
     fun startGameFromBeginning() {
         // TODO: save / load
-        Thread {
-            sleep(1000)
-            Scenario().firstIntro()
-        }.start()
+        // Thread {
+        //     sleep(1000)
+        //     Scenario().firstIntro()
+        // }.start()
 
+
+        view.showIntro()
+        Scenario().firstIntro()
         // Must be last line as it will be blocking.
         view.listenForUserInput()
     }
@@ -107,7 +109,8 @@ object GameController {
     fun lookAround() {
         val response = randomAnswerController.getRandomAnswerForLookingAround(
             Characters.MAIN_CHARACTER.currentRoom,
-            getAllRoomConnections(),
+            // TODO: There could be multiple ways to get to the same room.. but room connections would need to have easier/proper names not sentences.
+            getAllRoomConnections().map { it.toRoom },
             getAllPeople(),
             getAllRoomObjects()
         )

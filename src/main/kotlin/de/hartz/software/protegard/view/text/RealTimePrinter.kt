@@ -1,8 +1,9 @@
 package de.hartz.software.protegard.view.text
+
 import java.util.concurrent.LinkedBlockingQueue
 import kotlin.concurrent.thread
 
-class RealTimePrinter(private val delayMillis: Long = 20L) {
+class RealTimePrinter(private val delayMillis: Long = 10L) {
     private val messageQueue = LinkedBlockingQueue<String>()
     private val workerThread: Thread
 

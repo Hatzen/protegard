@@ -4,9 +4,9 @@ import de.hartz.software.protegard.model.interfaces.Identifieable
 
 abstract class Room(
     override var fullname: String,
-    var connections: MutableList<RoomConnection> = mutableListOf(),
-    var people: MutableList<Character> = mutableListOf(),
-    var objects: MutableList<RoomObject> = mutableListOf()
+    var connections: MutableSet<RoomConnection> = mutableSetOf(),
+    var people: MutableSet<Character> = mutableSetOf(),
+    var objects: MutableSet<RoomObject> = mutableSetOf()
 ) : Identifieable {
 
     abstract fun initConnections()
@@ -28,7 +28,7 @@ open class RoomConnection(
     val travelMessage: () -> String? = { null }
 ) : Identifieable {
     open fun canTravel(): Boolean {
-        return travelMessage == null
+        return travelMessage() == null
     }
 }
 

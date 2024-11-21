@@ -18,8 +18,6 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
     private val realTimePrinter = RealTimePrinter()
 
     override fun listenForUserInput() {
-        showIntro()
-
         while (scanInput) {
             val choice = scanner.nextLine().lowercase().trim()
 
@@ -41,9 +39,10 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
     }
 
 
-    private fun showIntro() {
+    override fun showIntro() {
         tellUser("Type 'Help' or h to show commands")
         tellUser("Type 'Exit' or x to exit program")
+        printHelp()
         tellUser("The Game begins..")
 
         if (Settings.useEffectsAndUi) {
@@ -103,9 +102,9 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
                 item1.combine(item2)
             }
 
-            DOACTION -> {
-                // TODO: item on people, like kill them or item on objects, like burn them
-            }
+            // DOACTION -> {
+            //     // TODO: item on people, like kill them or item on objects, like burn them
+            // }
 
             LOOKAROUND -> {
                 lookAround()
@@ -122,7 +121,7 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
             LISTPEOPLE ->
                 printIdentifiables(getAllPeople())
 
-            LISTACTIONS -> TODO()
+            // LISTACTIONS -> TODO()
         }
     }
 
@@ -133,7 +132,7 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
     private fun printHelp() {
         val objective = GameController.getCurrentObjective()
         tellUser("Your current Objective is: $objective")
-        tellUser("Type any of the following commands not case sensitive, either full or the shortcut letters. The parameter are ids of rooms, items or people. Not case sensitiv as well. Especially you do not have to type the full name, but only the first letters until it is not ambigous.")
+        tellUser("Type any of the following commands not case sensitive, either full or the shortcut letters. The parameter are ids of rooms, items or people. Not case sensitiv as well. Especially you do not have to type the full name, but only the first letters until it is not ambigous. Ids may contain whitespaces, to properly distinguish different ids an id with spaces needs to be sourrounded by \"id\"")
         tellUser("When into a conversation type the (row) number of the answer and press enter afterwards to select it.")
         for (x in TextCommands.entries) {
             tellUser("Command '" + x.value.key + "' shortcut " + x.value.shortcut + " minParameter " + x.value.numberOfIdentifiersMin + " maxParameter " + x.value.numberOfIdentifiersMax)

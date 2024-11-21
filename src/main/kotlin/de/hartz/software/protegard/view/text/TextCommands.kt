@@ -16,7 +16,7 @@ enum class TextCommands(val value: TextCommand) {
 
 
     // TODO: What exactly to offer here? Single Interaction for each or more general pass a list of possibilites per object?
-    DOACTION(TextCommand("DOACTION", "da")),
+    // DOACTION(TextCommand("DOACTION", "da")),
 
     // TODO: Would be cool to have generated texts, sounds playing, rooms available, cold or something
     //    Overall to enable room switches, objects and people
@@ -25,7 +25,7 @@ enum class TextCommands(val value: TextCommand) {
     LISTITEMS(TextCommand("LISTITEMS", "lsi")),
     LISTCONNECTIONS(TextCommand("LISTCONNECTIONS", "lsc")),
     LISTPEOPLE(TextCommand("LISTPEOPLE", "lsp")),
-    LISTACTIONS(TextCommand("LISTACTIONS", "lsa")),
+    // LISTACTIONS(TextCommand("LISTACTIONS", "lsa")),
     ;
 
 }

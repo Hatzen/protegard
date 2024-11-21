@@ -7,7 +7,8 @@ object Settings {
     var useLLMs = true
 
     //
-    var useEffectsAndUi = true
+    // TODO: Currently leading to issues, parallel input and output leading to infinte wrong input..
+    var useEffectsAndUi = false
     var translate = false
     var language: String = DEFAULT_LANGUAGE
 }
