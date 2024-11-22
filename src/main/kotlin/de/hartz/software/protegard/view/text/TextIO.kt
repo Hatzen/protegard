@@ -3,6 +3,7 @@ package de.hartz.software.protegard.view.text
 import de.hartz.software.protegard.controller.GameController
 import de.hartz.software.protegard.controller.GameController.getAllPeople
 import de.hartz.software.protegard.controller.GameController.getAllRoomConnections
+import de.hartz.software.protegard.controller.GameController.getAllRoomObjects
 import de.hartz.software.protegard.controller.GameController.lookAround
 import de.hartz.software.protegard.controller.IView
 import de.hartz.software.protegard.controller.generative.ChatGPTAdventure
@@ -10,17 +11,16 @@ import de.hartz.software.protegard.model.interfaces.Identifieable
 import de.hartz.software.protegard.model.settings.Settings
 import de.hartz.software.protegard.view.text.TextCommands.*
 import de.hartz.software.protegard.view.ui.ChapterAnimation
-import java.util.*
 
 class TextIO(val translator: ChatGPTAdventure) : IView {
-    private val scanner: Scanner = Scanner(System.`in`)
+    private val scanner = ThreadSafeIO()
     private var scanInput = true
     private val realTimePrinter = RealTimePrinter()
+    private var loadingSpinner: IOLoading? = IOLoading()
 
     override fun listenForUserInput() {
         while (scanInput) {
-            val choice = scanner.nextLine().lowercase().trim()
-
+            val choice = scanner.getLine()
             try {
                 // Split all words except within ""
                 val reg = "\"[^\"]*\"|\\S+"
@@ -28,7 +28,10 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
                 if (commandsAndParameters.isEmpty()) {
                     continue // User pressed enter.
                 }
+                stopAnimation()
+                loadingSpinner = IOLoading()
                 handleChoice(commandsAndParameters)
+                stopAnimation()
             } catch (ex: IllegalArgumentException) {
                 // TODO: Remove when debugging finished. Overall logging would be nice but is just overhead?
                 ex.printStackTrace()
@@ -54,7 +57,11 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
         val command = commandsAndParameters.first()
         val foundCommand =
             TextCommands.entries.find { it.value.key.lowercase() == command || it.value.shortcut.lowercase() == command }
-        requireNotNull(foundCommand, { "'$command' is not a valid command. see h" })
+        if (foundCommand == null) {
+            tellUser("'$command' is not a valid command. see h")
+            return
+        }
+
         val parameters = commandsAndParameters.subList(1, commandsAndParameters.size)
         val validParameterCount =
             IntRange(foundCommand.value.numberOfIdentifiersMin, foundCommand.value.numberOfIdentifiersMax)
@@ -65,6 +72,7 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
         when (foundCommand) {
             EXIT -> {
                 scanInput = false
+                scanner.running = false
                 GameController.exit()
             }
 
@@ -102,9 +110,15 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
                 item1.combine(item2)
             }
 
-            // DOACTION -> {
-            //     // TODO: item on people, like kill them or item on objects, like burn them
-            // }
+            DOACTION -> {
+                // TODO: item on people, like kill them or item on objects, like burn them
+
+                val item1 = getAllRoomObjects().find { isMatch(it, parameters[0]) }
+                requireNotNull(item1)
+
+                item1.interact()
+
+            }
 
             LOOKAROUND -> {
                 lookAround()
@@ -114,14 +128,16 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
                 printIdentifiables(GameController.getInventory())
             }
 
-            // TODO: The game would be more immersive if we only use look around..
+            // TODO: The game would be more immersive if we only use look around.. But atm the answer is not reliable in answering the truth
             LISTCONNECTIONS ->
                 printIdentifiables(getAllRoomConnections().map { it.toRoom })
 
             LISTPEOPLE ->
                 printIdentifiables(getAllPeople())
 
-            // LISTACTIONS -> TODO()
+            LISTACTIONS -> {
+                printIdentifiables(getAllRoomObjects())
+            }
         }
     }
 
@@ -163,33 +179,39 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
                 addText(choiceText)
 
                 // TODO: This filters invalid indexes but maybe retry would be better?
-                return mapIndexesFromString(scanner.nextLine(), choice)
+                return mapIndexesFromString(scanner.getMultipleChoice(), choice)
             } catch (ex: NoSuchElementException) {
                 tellUser("Not a valid choice, please type just the number with a comma.")
             }
         } while (true)
     }
 
-    private fun <T> mapIndexesFromString(input: String, list: List<T>): List<T> {
-        val indices = input.split(",")
-            .mapNotNull { it.trim().toIntOrNull() }
-            .filter { it in list.indices }
-
-        return indices.map { list[it] }
+    private fun <T> mapIndexesFromString(input: List<Int>, list: List<T>): List<T> {
+        return input
+            .filter { it in list.indices }.map { list[it] }
     }
 
 
     override fun getChoice(): Int {
         do {
             try {
-                return scanner.nextInt()
+                return scanner.getChoice()
             } catch (ex: NoSuchElementException) {
                 tellUser("Not a valid choice, please type just the number.")
             }
         } while (true)
     }
 
+    private fun stopAnimation() {
+        loadingSpinner?.stopAnimation()
+        loadingSpinner = null
+        Thread.sleep(50)
+    }
+
+    @Synchronized
     private fun tellUser(text: String) {
+        stopAnimation()
+
         // TODO: translating makes only issues.
         //   https://community.openai.com/t/anyone-doing-successful-translations-with-gpt-3-5/326636/12
         // val translatedText = translator.translate(text)

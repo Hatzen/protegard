@@ -39,12 +39,6 @@ object GameController {
 
     fun startGameFromBeginning() {
         // TODO: save / load
-        // Thread {
-        //     sleep(1000)
-        //     Scenario().firstIntro()
-        // }.start()
-
-
         view.showIntro()
         Scenario().firstIntro()
         // Must be last line as it will be blocking.

@@ -35,7 +35,8 @@ class AstridHansenLadyOfTheCastle : Character("Astrid Hansen", Rooms.lobbyRoom) 
             ),
             target = this
         ),
-        source = this
+        source = this,
+        onlyOnce = true
     )
 
     val DENIED_STUDY_ROOM_KEY: Dialog by lazy {
