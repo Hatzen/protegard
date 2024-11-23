@@ -16,7 +16,8 @@ class FireStoven : RoomObject("FireStoven") {
         if (Characters.MAIN_CHARACTER.inventory.contains(Items.coal)) {
             Characters.MAIN_CHARACTER.inventory.remove(Items.coal)
             val result = CookingPuzzle.start(GameController.view)
-            GameController.environment.currentGameDateTime = GameController.environment.currentGameDateTime.plusHours(2)
+            val minutes = 2 * 60L
+            GameController.environment.passTime(minutes)
             GameController.addDialog("The food is ready, lets ring the dining bell.", Characters.MAIN_CHARACTER)
             var trust = 0
             var text = ""

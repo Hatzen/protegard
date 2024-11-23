@@ -1,13 +1,9 @@
 package de.hartz.software.protegard.model.scenario.rooms
 
-import de.hartz.software.protegard.model.common.Character
 import de.hartz.software.protegard.model.common.Room
-import de.hartz.software.protegard.model.common.RoomConnection
-import de.hartz.software.protegard.model.scenario.RoomObjects
-import de.hartz.software.protegard.model.scenario.Rooms
 
 
-class Hell : Room("Fictional place to but people which are not alive") {
+class Hell : Room("Fictional place to put people which are not alive or should not be accessible") {
     override fun initConnections() {
     }
 
