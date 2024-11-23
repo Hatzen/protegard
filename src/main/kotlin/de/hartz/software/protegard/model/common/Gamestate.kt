@@ -1,5 +1,6 @@
 package de.hartz.software.protegard.model.common
 
+import de.hartz.software.protegard.controller.LoggerUtil
 import de.hartz.software.protegard.model.milestones.Chapter
 import de.hartz.software.protegard.model.milestones.Milestone
 
@@ -13,6 +14,7 @@ class Gamestate {
     }
 
     fun setReached(milestone: Milestone) {
+        LoggerUtil.logger.debug { "Milestone reached: $milestone" }
         reachedMilestone.add(milestone)
         milestone.reached = true
     }

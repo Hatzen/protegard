@@ -4,12 +4,11 @@ import de.hartz.software.protegard.controller.GameController
 import de.hartz.software.protegard.model.common.RoomObject
 import de.hartz.software.protegard.model.scenario.Characters
 
-class WoodenBarrel : RoomObject("Flour") {
+class WoodenBarrel : RoomObject("Wooden Barrels") {
     override fun interact() {
         GameController.addDialog(
-            "A large bag full of flour",
+            "Different barrels, one has to open to see what is inside.",
             Characters.NARRATOR
         )
-        // TODO: use to pour on the ground and come back later to see where the rat come from and goes to. Catch it so someone provides help or to catch a key?
     }
 }

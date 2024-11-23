@@ -20,6 +20,8 @@ class KarinSvenssonAGouverneur : Character("Karin Svensson", Rooms.hall) {
                 target = this,
             ),
             source = this,
+            // TODO :This will delete all dialogs added afterwards.. quite dangerous..
+            //  if first "dialogs" is an OnlyOnce We could queue them in a list, and add them afterwards.
             onlyOnce = true
         )
     }

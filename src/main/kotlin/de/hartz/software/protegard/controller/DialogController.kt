@@ -46,7 +46,7 @@ class DialogController(private var dialog: Dialog, private val view: IView) {
         dialog.callback()
     }
 
-    private fun getAnswer(answers: MutableList<Dialog>) {
+    private fun getAnswer(answers: List<Dialog>) {
         while (true) {
             val choice = view.getChoice()
             if (choice in 0 until answers.size) {
@@ -65,12 +65,11 @@ class DialogController(private var dialog: Dialog, private val view: IView) {
         val previousDialog = previousDialog
         // It is the initial characters dialog.
         if (previousDialog == null) {
-            // TODO: Only once for root dialog should remove this dialog
-            // dialog.target.dialogs = null
-            if(dialog.target.dialogs == dialog) {
-                dialog.target.dialogs = null
+            // Only once for root dialog.
+            if (dialog.target.dialogs == dialog) {
+                dialog.target.removeRootDialog()
             } else if (dialog.source.dialogs == dialog) {
-                dialog.source.dialogs = null
+                dialog.source.removeRootDialog()
             } else {
                 throw RuntimeException("Dialog did not belong to anyone, could not remove it..")
             }

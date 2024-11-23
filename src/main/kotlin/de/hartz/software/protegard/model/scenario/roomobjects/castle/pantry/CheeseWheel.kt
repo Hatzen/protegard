@@ -10,6 +10,5 @@ class CheeseWheel : RoomObject("Flour") {
             "A large bag full of flour",
             Characters.NARRATOR
         )
-        // TODO: use to pour on the ground and come back later to see where the rat come from and goes to. Catch it so someone provides help or to catch a key?
     }
 }

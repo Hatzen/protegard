@@ -21,6 +21,7 @@ import de.hartz.software.protegard.model.scenario.roomobjects.castle.hall.Sofa
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.hall.Tapestries
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.kitchen.*
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.library.*
+import de.hartz.software.protegard.model.scenario.roomobjects.castle.lobby.Chesstable
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.lobby.CoatRack
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.lobby.OrnamentalClock
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.lobby.StoneStatue
@@ -119,6 +120,7 @@ object RoomObjects {
     val coatRack = CoatRack()
     val ornamentalClock = OrnamentalClock()
     val stoneStatue = StoneStatue()
+    val chesstable = Chesstable()
 
     // pantry
     val cheeseWheel = CheeseWheel()

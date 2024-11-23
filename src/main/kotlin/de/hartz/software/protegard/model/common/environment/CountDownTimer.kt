@@ -1,5 +1,6 @@
 package de.hartz.software.protegard.model.common.environment
 
+import de.hartz.software.protegard.controller.LoggerUtil
 import kotlin.concurrent.timer
 
 object CountDownCallbackIds {
@@ -27,6 +28,7 @@ class CountDownCallback(val callback: CountDownCallback.() -> Unit, val seconds:
     fun checkAndCallCallback() {
         timer--
         if (timer <= 0) {
+            LoggerUtil.logger.debug { "Running callback for id $id next in $seconds seconds" }
             callback()
             reset()
         }

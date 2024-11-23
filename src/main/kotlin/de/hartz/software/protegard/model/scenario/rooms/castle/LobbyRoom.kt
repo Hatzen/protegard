@@ -16,8 +16,10 @@ class LobbyRoom : Room("LobbyRoom") {
             mutableListOf(
                 RoomObjects.coatRack,
                 RoomObjects.ornamentalClock,
-                RoomObjects.stoneStatue
-            ))
+                RoomObjects.stoneStatue,
+                RoomObjects.chesstable
+            )
+        )
     }
 
     override fun onEnter(character: Character?) {

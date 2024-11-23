@@ -4,6 +4,7 @@ import de.hartz.software.protegard.model.common.dialog.Dialog
 import de.hartz.software.protegard.model.interfaces.Identifieable
 import de.hartz.software.protegard.model.interfaces.Interactable
 import de.hartz.software.protegard.model.scenario.Characters
+import java.util.*
 
 open class Character(
     final override var fullname: String,
@@ -13,6 +14,7 @@ open class Character(
     var inventory: MutableList<Item> = mutableListOf(),
     var alive: Boolean = true
 ) : Interactable, Identifieable {
+    private val queuedDialogs: Queue<Dialog> = ArrayDeque()
 
     var currentRoom = currentRoom
         private set
@@ -36,10 +38,13 @@ open class Character(
 
     // TODO: is this really useful? Probably it would be better to have a special Dialog for the start,
     //   so we are sure there is some sort of greeting and then a simple topic selection..
+    //      Would be annyoing to handle probably?
     fun addDialog(dialog: Dialog) {
         val allDialogs = dialogs
         if (allDialogs == null) {
             dialogs = dialog
+        } else if (allDialogs.onlyOnce) {
+            queuedDialogs.add(dialog)
         } else {
             val answers = allDialogs.answers
             if (answers == null) {
@@ -48,6 +53,12 @@ open class Character(
                 answers.add(dialog)
             }
         }
+    }
+
+    fun removeRootDialog() {
+        val entry = queuedDialogs.poll()
+        // Either use queued dialog or set null.
+        dialogs = entry
     }
 
     fun changeTrust(value: Int, character: Character = Characters.MAIN_CHARACTER) {

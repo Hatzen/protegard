@@ -4,7 +4,7 @@ import de.hartz.software.protegard.controller.GameController
 import de.hartz.software.protegard.model.common.RoomObject
 import de.hartz.software.protegard.model.scenario.Characters
 
-class StoneStatue : RoomObject("Book Shelve") {
+class StoneStatue : RoomObject("Stone Statue") {
     override fun interact() {
         GameController.addDialog(
             "A book shelve, full of different kind of books in very different conditions.",

@@ -205,7 +205,6 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
     private fun stopAnimation() {
         loadingSpinner?.stopAnimation()
         loadingSpinner = null
-        Thread.sleep(50)
     }
 
     @Synchronized

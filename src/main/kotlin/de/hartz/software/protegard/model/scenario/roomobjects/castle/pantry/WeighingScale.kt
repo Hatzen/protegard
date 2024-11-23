@@ -4,12 +4,11 @@ import de.hartz.software.protegard.controller.GameController
 import de.hartz.software.protegard.model.common.RoomObject
 import de.hartz.software.protegard.model.scenario.Characters
 
-class WeighingScale : RoomObject("Flour") {
+class WeighingScale : RoomObject("Weighing Scale") {
     override fun interact() {
         GameController.addDialog(
-            "A large bag full of flour",
+            "A simple weighning scale. You hang in the weights and place the object to weight on the other side.",
             Characters.NARRATOR
         )
-        // TODO: use to pour on the ground and come back later to see where the rat come from and goes to. Catch it so someone provides help or to catch a key?
     }
 }

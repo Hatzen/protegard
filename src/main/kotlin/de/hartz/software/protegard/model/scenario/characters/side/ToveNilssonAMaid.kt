@@ -1,7 +1,9 @@
 package de.hartz.software.protegard.model.scenario.characters.side
 
+import de.hartz.software.protegard.controller.GameController
 import de.hartz.software.protegard.model.common.Character
 import de.hartz.software.protegard.model.common.dialog.Dialog
+import de.hartz.software.protegard.model.milestones.Milestone
 import de.hartz.software.protegard.model.scenario.Rooms
 
 /**
@@ -21,6 +23,7 @@ class ToveNilssonAMaid : Character("Tove Nilsson", Rooms.kitchen) {
                 """
                     Consider it as already done.
                     """.trimIndent(),
+                callback = { GameController.gamestate.setReached(Milestone.FIND_MOUSE) },
                 target = this,
             ),
             source = this,

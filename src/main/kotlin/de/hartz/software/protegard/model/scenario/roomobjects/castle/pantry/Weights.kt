@@ -4,12 +4,11 @@ import de.hartz.software.protegard.controller.GameController
 import de.hartz.software.protegard.model.common.RoomObject
 import de.hartz.software.protegard.model.scenario.Characters
 
-class Weights : RoomObject("Flour") {
+class Weights : RoomObject("Weights") {
     override fun interact() {
         GameController.addDialog(
-            "A large bag full of flour",
+            "A full set of weights 1g, 5g, 10g, 20g, 25g, 50g, 100g, 200g, 250g, 500g",
             Characters.NARRATOR
         )
-        // TODO: use to pour on the ground and come back later to see where the rat come from and goes to. Catch it so someone provides help or to catch a key?
     }
 }
