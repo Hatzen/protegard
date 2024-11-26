@@ -32,7 +32,7 @@ import de.hartz.software.protegard.model.scenario.roomobjects.castle.sleepingroo
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.sleepingroom.BedSideTable
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.sleepingroom.PersonalChest
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.studyroom.Desk
-import de.hartz.software.protegard.model.scenario.roomobjects.castle.studyroom.Keyhole
+import de.hartz.software.protegard.model.scenario.roomobjects.castle.studyroom.MetalTray
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.tower.PigeonCoop
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.tower.WindChimes
 import de.hartz.software.protegard.model.scenario.roomobjects.castle.utilityroom.*
@@ -141,7 +141,7 @@ object RoomObjects {
 
     // studyroom
     val desk = Desk()
-    val keyhole = Keyhole()
+    val metalTray = MetalTray()
 
     // tower
     val pigeonCoop = PigeonCoop()

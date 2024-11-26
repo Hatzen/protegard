@@ -1,4 +1,4 @@
-package controller.puzzels
+package de.hartz.software.protegard.controller.puzzels
 
 class LogicGridPuzzle {
     private val categories = listOf("Characters", "Locations", "Items")
@@ -12,7 +12,8 @@ class LogicGridPuzzle {
         "The Sidekick has the Map.",
         "The Merchant is in the Village.",
         "The Potion is found in the Forest.",
-        "The Sword is with the Hero."
+        "The Sword is with the Hero.",
+        "The Key is not with the Merchant."
     )
 
     fun startGame() {

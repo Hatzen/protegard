@@ -4,7 +4,7 @@ import de.hartz.software.protegard.model.interfaces.Identifieable
 
 interface IView {
 
-    fun showIntro()
+    fun startChapter(i: Int)
     fun listenForUserInput()
 
     fun addText(text: String, source: Identifieable)

@@ -7,6 +7,7 @@ import de.hartz.software.protegard.controller.generative.setup.SetupHelper
 import de.hartz.software.protegard.model.common.*
 import de.hartz.software.protegard.model.common.environment.Environment
 import de.hartz.software.protegard.model.interfaces.Identifieable
+import de.hartz.software.protegard.model.milestones.Chapter
 import de.hartz.software.protegard.model.scenario.Characters
 import de.hartz.software.protegard.model.scenario.Rooms
 import de.hartz.software.protegard.model.scenario.Scenario
@@ -39,10 +40,18 @@ object GameController {
 
     fun startGameFromBeginning() {
         // TODO: save / load
-        view.showIntro()
+        view.startChapter(1)
         Scenario().firstIntro()
         // Must be last line as it will be blocking.
         view.listenForUserInput()
+    }
+
+    fun nextChapter() {
+        val nextChapter = gamestate.currentChapter.order + 1
+        val next = Chapter.entries.find { nextChapter.toShort() == it.order }!!
+        gamestate.currentChapter.reached = true
+        gamestate.currentChapter = next
+        view.startChapter(nextChapter)
     }
 
     fun getCurrentObjective(): String {

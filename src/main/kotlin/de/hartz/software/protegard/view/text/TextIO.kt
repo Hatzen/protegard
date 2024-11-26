@@ -42,15 +42,17 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
     }
 
 
-    override fun showIntro() {
-        tellUser("Type 'Help' or h to show commands")
-        tellUser("Type 'Exit' or x to exit program")
-        printHelp()
-        tellUser("The Game begins..")
-
+    override fun startChapter(i: Int) {
+        if (i == 1) {
+            tellUser("Type 'Help' or h to show commands")
+            tellUser("Type 'Exit' or x to exit program")
+            printHelp()
+            tellUser("The Game begins..")
+        }
         if (Settings.useEffectsAndUi) {
             ChapterAnimation.showChapter(1)
         }
+        tellUser("..::Chapter $i::..")
     }
 
     private fun handleChoice(commandsAndParameters: List<String>) {
@@ -95,8 +97,14 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
             USEITEM -> {
                 val item = GameController.getInventory().find { isMatch(it, parameters[0]) }
                 requireNotNull(item)
-                // TODO: Move to Gamecontroller call?
-                item.interact()
+
+                if (parameters.size == 1) {
+                    item.interact()
+                } else {
+                    val roomObject = getAllRoomObjects().find { isMatch(it, parameters[1]) }
+                    requireNotNull(roomObject)
+                    roomObject
+                }
             }
 
             COMBINEITEM -> {
@@ -113,10 +121,10 @@ class TextIO(val translator: ChatGPTAdventure) : IView {
             DOACTION -> {
                 // TODO: item on people, like kill them or item on objects, like burn them
 
-                val item1 = getAllRoomObjects().find { isMatch(it, parameters[0]) }
-                requireNotNull(item1)
+                val roomObject = getAllRoomObjects().find { isMatch(it, parameters[0]) }
+                requireNotNull(roomObject)
 
-                item1.interact()
+                roomObject.interact()
 
             }
 

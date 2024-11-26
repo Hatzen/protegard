@@ -9,6 +9,7 @@ enum class Milestone(var reached: Boolean = false) : IMilestone {
     FIND_MOUSE,
     FOLLOW_MOUSE,
     FOUND_MOUSE,
+    SECRET_STUDY_ROOM_FOUND,
 
     // Stone Plate.
     CASTLE_CANT_READ_STONE_PLATE,
@@ -19,8 +20,6 @@ enum class Milestone(var reached: Boolean = false) : IMilestone {
     TRIED_TO_ACCESS_STUDY_ROOM,
     MISSION_TO_GET_KEY_TO_STUDY_ROOM_DONE,
 
-    // Other.
-    SECRET_STUDY_ROOM_OPENED
     ;
 
     override fun isReached(): Boolean = reached
