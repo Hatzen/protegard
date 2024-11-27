@@ -1,5 +1,6 @@
 package de.hartz.software.protegard.controller.generative
 
+import de.hartz.software.protegard.controller.generative.content.ChatGPTAdventure
 import de.hartz.software.protegard.model.common.Character
 import de.hartz.software.protegard.model.common.Room
 import de.hartz.software.protegard.model.common.RoomObject
@@ -29,16 +30,6 @@ class RandomAnswerController(val chatGPTAdventure: ChatGPTAdventure) {
             """.trimIndent()
         )
     }
-
-    /*
-    fun getRandomAnswerForLookingAround(room: Identifieable): String {
-        return chatGPTAdventure.getNarratorBasedContent(
-            """
-                Generate an inner monologue for someone who looks around in 
-                a $room. It should be quiet meaningless.
-                """.trimIndent()
-        )
-    } */
 
     fun getRandomAnswerForLookingAround(
         currentRoom: Identifieable,

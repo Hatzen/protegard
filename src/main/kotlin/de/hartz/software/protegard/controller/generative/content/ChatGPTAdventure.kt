@@ -1,4 +1,4 @@
-package de.hartz.software.protegard.controller.generative
+package de.hartz.software.protegard.controller.generative.content
 
 import de.hartz.software.protegard.controller.generative.setup.SetupHelper
 import de.hartz.software.protegard.model.common.Gamestate
@@ -9,18 +9,19 @@ class ChatGPTAdventure(private val settings: Settings, private val gamestate: Ga
 
     companion object {
         const val API_URL: String = "http://localhost:11434"
-        // very bad with translation "llama3.2"
-        // takes all ram and takes 5 min for simple tasks. "gemma2:27b"
-        // Wont stop adding preamble and takes long to answer.. "gemma2"
-        const val MODEL =  "llama3.2" // "gemma2" // "llama3.2" // "llama3.2" "gemma2:27b"
+
+        // "gemma2:27b" similar results, less creative.
+        // TODO: If we want RAG but probably not needed so far?
+        // https://ollama.com/library/nemotron-mini
+        const val MODEL = "llama3.2"
         const val STATIC_NO_LLM_ANSWER = "The cake is a lie.."
     }
 
-    private val chatService: ChatService?
+    private val chatService: GenerativeService?
 
     init {
         chatService = if (SetupHelper.isOllamaInstalled) {
-            ChatService(API_URL, MODEL)
+            GenerativeService(API_URL, MODEL)
         } else {
             null
         }
@@ -48,14 +49,6 @@ class ChatGPTAdventure(private val settings: Settings, private val gamestate: Ga
             return true
         }
         return chatService!!.isCorrectAnswerToPreviousGeneratedQuestion(message)
-    }
-
-    fun translate(
-        message: String,
-        languageTo: String = settings.language,
-        languageFrom: String = "english" // TODO: This would be nice but does lead to many errors "detect source language"
-    ): String {
-        return getDynamicResponse { chatService!!.translate(message, languageTo, languageFrom) }
     }
 
     fun getTechnicalResponse(

@@ -1,41 +1,41 @@
-package controller.generative
+package de.hartz.software.protegard.controller.generative.content.deprecated
 
-import de.hartz.software.protegard.controller.generative.ChatService.Companion.StoryBasedMemoryId
-import de.hartz.software.protegard.controller.generative.ChatService.Companion.StoryIndependendMemoryId
-import de.hartz.software.protegard.controller.generative.ChatService.Companion.TechniclaMemoryId
-import de.hartz.software.protegard.controller.generative.ChatService.Companion.TranslationMemoryId
+import de.hartz.software.protegard.controller.generative.content.GenerativeService.Companion.StoryBasedMemoryId
+import de.hartz.software.protegard.controller.generative.content.GenerativeService.Companion.StoryIndependendMemoryId
+import de.hartz.software.protegard.controller.generative.content.GenerativeService.Companion.TechniclaMemoryId
+import de.hartz.software.protegard.controller.generative.content.GenerativeService.Companion.TranslationMemoryId
 import dev.langchain4j.service.*
 
 
 // TODO: Edit prompts to remove formatting like ** ** for headline
 interface ModelCommunication {
-/*
-    @SystemMessage(
-        """
-
-            You answer always in language {{language}}.
-            You do not use any markdown formatting or enumerations, just plain blocktext.
-             You do not interact with the user at all. 
-             You are not allowed to write any interaction of the games characters, such as dialogs or anything. 
-             You are only describing the environment.
-             YOU DO NOT DECIDE ANYTHING IN THE GAME.
-            You only do what it asked in the prompts.
-            
-            The area is playing in 1920.
-            You are not the narrator and just provide useful texts generated based on the input.
-            You must be carful what you generate has to fit in the storyline.
-            
-            
-            The previous chapters story will follow but can be mostly ignored as only a very small portion is useful.
-            You should highly focus on the user message.
-             
+    /*
+        @SystemMessage(
             """
-            // Leads to using other entities... People who are not present in the current room
-            // {{chapter}}
 
-            // Leads to fantasies.
-            // ou generate texts for an text based point adventure game which is
-    )*/
+                You answer always in language {{language}}.
+                You do not use any markdown formatting or enumerations, just plain blocktext.
+                 You do not interact with the user at all.
+                 You are not allowed to write any interaction of the games characters, such as dialogs or anything.
+                 You are only describing the environment.
+                 YOU DO NOT DECIDE ANYTHING IN THE GAME.
+                You only do what it asked in the prompts.
+
+                The area is playing in 1920.
+                You are not the narrator and just provide useful texts generated based on the input.
+                You must be carful what you generate has to fit in the storyline.
+
+
+                The previous chapters story will follow but can be mostly ignored as only a very small portion is useful.
+                You should highly focus on the user message.
+
+                """
+                // Leads to using other entities... People who are not present in the current room
+                // {{chapter}}
+
+                // Leads to fantasies.
+                // ou generate texts for an text based point adventure game which is
+        )*/
 
     /*
     The following block with colons is just background infos you should not use directly.
@@ -44,7 +44,7 @@ interface ModelCommunication {
 :::::
      */
     @SystemMessage(
-    """
+        """
         # CONTEXT #
     I want you to make my adventure game more immersive by adding meaningless but immersive description of the environment the gamer is currently in.
     

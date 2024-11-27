@@ -1,6 +1,6 @@
-package de.hartz.software.protegard.controller.generative
+package de.hartz.software.protegard.controller.generative.content.deprecated
 
-import controller.generative.ModelCommunication
+import de.hartz.software.protegard.controller.generative.content.ContentGenerationModelCommunication
 import dev.langchain4j.data.message.AiMessage
 import dev.langchain4j.exception.IllegalConfigurationException
 import dev.langchain4j.model.StreamingResponseHandler
@@ -16,7 +16,7 @@ import java.util.function.Consumer
 class SimpleModelCommunication(
     val languageModel: StreamingLanguageModel,
     val languageModel2: LanguageModel
-) : ModelCommunication {
+) : ContentGenerationModelCommunication {
     override fun getNarratorBasedContent(message: String, language: String, chapter: String, id: Int): TokenStream {
         val _this = object : Any() {}.javaClass.enclosingMethod
         val message = Message.createFromMethod(_this)
@@ -65,15 +65,6 @@ class SimpleModelCommunication(
     }
 
     override fun isCorrectAnswerToPreviousGeneratedQuestion(message: String, id: Int): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun translateTextToLanguage(
-        message: String,
-        languageTo: String,
-        languageFrom: String,
-        id: Int
-    ): TokenStream {
         TODO("Not yet implemented")
     }
 

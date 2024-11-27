@@ -9,8 +9,8 @@ object Items {
     val coal = Coal()
     val lighter = Lighter()
     val rareCoin = RareCoin()
-    val rareCoin2 = RareCoin2()
-    val rareCoin3 = RareCoin3()
+    val rareCoin2 = RareCoin()
+    val rareCoin3 = RareCoin()
     val studyRoomKey = StudyRoomKey()
 
 }

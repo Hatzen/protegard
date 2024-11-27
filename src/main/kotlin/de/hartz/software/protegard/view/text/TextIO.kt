@@ -6,13 +6,13 @@ import de.hartz.software.protegard.controller.GameController.getAllRoomConnectio
 import de.hartz.software.protegard.controller.GameController.getAllRoomObjects
 import de.hartz.software.protegard.controller.GameController.lookAround
 import de.hartz.software.protegard.controller.IView
-import de.hartz.software.protegard.controller.generative.ChatGPTAdventure
+import de.hartz.software.protegard.controller.generative.translation.TranslationGPT
 import de.hartz.software.protegard.model.interfaces.Identifieable
 import de.hartz.software.protegard.model.settings.Settings
 import de.hartz.software.protegard.view.text.TextCommands.*
 import de.hartz.software.protegard.view.ui.ChapterAnimation
 
-class TextIO(val translator: ChatGPTAdventure) : IView {
+class TextIO(val translator: TranslationGPT) : IView {
     private val scanner = ThreadSafeIO()
     private var scanInput = true
     private val realTimePrinter = RealTimePrinter()

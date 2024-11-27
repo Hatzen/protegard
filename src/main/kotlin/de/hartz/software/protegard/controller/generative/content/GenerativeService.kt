@@ -1,6 +1,5 @@
-package de.hartz.software.protegard.controller.generative
+package de.hartz.software.protegard.controller.generative.content
 
-import controller.generative.ModelCommunication
 import de.hartz.software.protegard.controller.LoggerUtil.logger
 import dev.langchain4j.data.message.AiMessage
 import dev.langchain4j.memory.chat.MessageWindowChatMemory
@@ -14,7 +13,7 @@ import java.time.Duration
 import java.util.concurrent.CompletableFuture
 
 // https://tpbabparn.medium.com/java-ollama-unlock-capability-of-generative-ai-to-java-developer-with-langchain4j-model-on-c814f97d9676
-class ChatService {
+class GenerativeService {
 
     companion object {
         const val StoryBasedMemoryId = 1
@@ -24,13 +23,13 @@ class ChatService {
     }
 
     val languageModel: StreamingChatLanguageModel
-    val assistant: ModelCommunication
+    val assistant: ContentGenerationModelCommunication
 
     constructor(modelUrl: String, modelName: String) {
         this.languageModel = connectModel(modelUrl, modelName)
         val languageModel2 = connectModelProcedural(modelUrl, modelName)
         // Memorize for 100 messages continuously
-        this.assistant = AiServices.builder(ModelCommunication::class.java)
+        this.assistant = AiServices.builder(ContentGenerationModelCommunication::class.java)
             // Alternative of .chatLanguageModel() which support streaming response
             .chatLanguageModel(languageModel2)
             .streamingChatLanguageModel(this.languageModel)
@@ -121,11 +120,6 @@ class ChatService {
     ): Boolean {
         logRequest("isCorrectAnswerToPreviousGeneratedQuestion", message)
         return assistant.isCorrectAnswerToPreviousGeneratedQuestion(message)
-    }
-
-    fun translate(message: String, languageTo: String, languageFrom: String): CompletableFuture<String> {
-        logRequest("translate", message)
-        return ask { assistant.translateTextToLanguage(message, languageTo, languageFrom) }
     }
 
     fun getTechnicalResponse(message: String): CompletableFuture<String> {

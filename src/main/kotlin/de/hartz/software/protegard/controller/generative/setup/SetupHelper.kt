@@ -1,17 +1,16 @@
 package de.hartz.software.protegard.controller.generative.setup
 
 import de.hartz.software.protegard.controller.LoggerUtil.logger
-import de.hartz.software.protegard.controller.generative.ChatService
-import de.hartz.software.protegard.controller.generative.ChatGPTAdventure.Companion.API_URL
-import de.hartz.software.protegard.controller.generative.ChatGPTAdventure.Companion.MODEL
+import de.hartz.software.protegard.controller.generative.content.ChatGPTAdventure.Companion.API_URL
+import de.hartz.software.protegard.controller.generative.content.ChatGPTAdventure.Companion.MODEL
+import de.hartz.software.protegard.controller.generative.content.GenerativeService
+import de.hartz.software.protegard.controller.generative.translation.TranslationGPT
 import de.hartz.software.protegard.model.settings.Settings
 import java.io.IOException
 
 class SetupHelper {
 
     companion object {
-        // TODO: If we want RAG but probably not needed so far?
-        // https://ollama.com/library/nemotron-mini
         private val COMMAND = "ollama"
 
 
@@ -40,6 +39,7 @@ class SetupHelper {
         Runtime.getRuntime().addShutdownHook(Thread {
             logger.warn("Shutting down Ollama server...")
             runCommand(listOf(COMMAND, "stop", MODEL))
+            runCommand(listOf(COMMAND, "stop", TranslationGPT.MODEL))
 
             // TODO: server still needs to be killed:
             // https://github.com/ollama/ollama/issues/690#issuecomment-1998454215
@@ -51,7 +51,7 @@ class SetupHelper {
 
 
         while (true) {
-            if (checkServerHealth(MODEL)) {
+            if (checkServerHealth(MODEL) && checkServerHealth(TranslationGPT.MODEL)) {
                 logger.info("Server is running with $MODEL")
                 break
             } else {
@@ -91,12 +91,16 @@ class SetupHelper {
         // Needed otherwise run ollama will lead to Error:
         // Head "http://127.0.0.1:11434/": dial tcp 127.0.0.1:11434: connectex: Connection refused
         Thread {
-            val command = listOf(COMMAND, "serve")
+            var command = listOf(COMMAND, "pull", TranslationGPT.MODEL)
+            runCommand(command)?.let { logger.info(it) }
+            command = listOf(COMMAND, "pull", MODEL)
+            runCommand(command)?.let { logger.info(it) }
+            command = listOf(COMMAND, "serve")
             runCommand(command)?.let { logger.info(it) }
         }.start()
         // TODO: Running this the first time might lead to timeout..
         // Get test response so "ps" will show an active instance.
-        ChatService(API_URL, MODEL).generateStoryIndependentStuff("Answer to test", Settings.DEFAULT_LANGUAGE)
+        GenerativeService(API_URL, MODEL).generateStoryIndependentStuff("Answer to test", Settings.DEFAULT_LANGUAGE)
     }
 
     // Check server health by running `ollama ps` and looking for llama3.2

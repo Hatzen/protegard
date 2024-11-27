@@ -1,5 +1,6 @@
 package de.hartz.software.protegard.controller.generative
 
+import de.hartz.software.protegard.controller.generative.content.ChatGPTAdventure
 import dev.langchain4j.service.MemoryId
 
 class ContextAnswerController(private val chatGPTAdventure: ChatGPTAdventure) {

@@ -1,9 +1,10 @@
 package de.hartz.software.protegard.controller
 
-import de.hartz.software.protegard.controller.generative.ChatGPTAdventure
 import de.hartz.software.protegard.controller.generative.ContextAnswerController
 import de.hartz.software.protegard.controller.generative.RandomAnswerController
+import de.hartz.software.protegard.controller.generative.content.ChatGPTAdventure
 import de.hartz.software.protegard.controller.generative.setup.SetupHelper
+import de.hartz.software.protegard.controller.generative.translation.TranslationGPT
 import de.hartz.software.protegard.model.common.*
 import de.hartz.software.protegard.model.common.environment.Environment
 import de.hartz.software.protegard.model.interfaces.Identifieable
@@ -35,7 +36,7 @@ object GameController {
         randomAnswerController = RandomAnswerController(ChatGPTAdventure(Settings, gamestate))
         contextAnswerController = ContextAnswerController(ChatGPTAdventure(Settings, gamestate))
 
-        this.view = TextIO(ChatGPTAdventure(Settings, gamestate))
+        this.view = TextIO(TranslationGPT(Settings))
     }
 
     fun startGameFromBeginning() {

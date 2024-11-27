@@ -1,7 +1,7 @@
-package de.hartz.software.protegard.controller.generative
+package de.hartz.software.protegard.controller.generative.content.deprecated
 
-import controller.generative.ModelCommunication
 import de.hartz.software.protegard.controller.LoggerUtil.logger
+import de.hartz.software.protegard.controller.generative.content.ContentGenerationModelCommunication
 import dev.langchain4j.data.message.AiMessage
 import dev.langchain4j.model.language.LanguageModel
 import dev.langchain4j.model.language.StreamingLanguageModel
@@ -18,7 +18,7 @@ class LLMService {
     val languageModel: StreamingLanguageModel
     val languageModel2: LanguageModel
 
-    val assistant: ModelCommunication
+    val assistant: ContentGenerationModelCommunication
 
     constructor(modelUrl: String, modelName: String) {
         this.languageModel = connectModel(modelUrl, modelName)
@@ -99,11 +99,6 @@ class LLMService {
     ): Boolean {
         logRequest("isCorrectAnswerToPreviousGeneratedQuestion", message)
         return assistant.isCorrectAnswerToPreviousGeneratedQuestion(message)
-    }
-
-    fun translate(message: String, languageTo: String, languageFrom: String): CompletableFuture<String> {
-        logRequest("translate", message)
-        return ask { assistant.translateTextToLanguage(message, languageTo, languageFrom) }
     }
 
     fun getTechnicalResponse(message: String): CompletableFuture<String> {
