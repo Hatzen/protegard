@@ -26,7 +26,7 @@ class TranslationGPT(private val settings: Settings) {
         languageTo: String = settings.language,
         languageFrom: String = "english" // or maybe "detect source language"
     ): String {
-        if (!settings.useLLMs) {
+        if (!settings.useLLMs || !settings.translate) {
             return message
         }
         return chatService!!.translate(message, languageTo, languageFrom)

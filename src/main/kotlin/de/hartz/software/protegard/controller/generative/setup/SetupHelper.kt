@@ -51,7 +51,8 @@ class SetupHelper {
 
 
         while (true) {
-            if (checkServerHealth(MODEL) && checkServerHealth(TranslationGPT.MODEL)) {
+            // TODO: Locally only one model at a time willl run..  && checkServerHealth(TranslationGPT.MODEL)
+            if (checkServerHealth(MODEL)) {
                 logger.info("Server is running with $MODEL")
                 break
             } else {
@@ -74,32 +75,45 @@ class SetupHelper {
     }
 
     // Set environment variables for Ollama
-    fun setEnvironmentVariables() {
-        val env = System.getenv()
-        // env.entries.forEach { println("${it.key}=${it.value}") }
-
-        // TODO: This sets the vars for this process, do we really want this? Does it lead to child processes properly set.
+    private fun setEnvironmentVariables() {
+        // TODO: This is quiet useless.. we need to set env variables via system..
         // System.setProperty("OLLAMA_DEBUG", "1")
         System.setProperty("OLLAMA_HOST", "127.0.0.1:11434")
-        // System.setProperty("OLLAMA_KEEP_ALIVE", "5m")
-        System.setProperty("OLLAMA_MAX_LOADED_MODELS", "1")
+        System.setProperty("OLLAMA_KEEP_ALIVE", "10m")
+        // TODO: Wont work with 8GB VRAM.
+        System.setProperty("OLLAMA_MAX_LOADED_MODELS", "3")
         // System.setProperty("OLLAMA_MODELS", "/path/to/models")
+
+        // val env = System.getenv()
+        // env.entries.forEach { println("${it.key}=${it.value}") }
     }
 
     // Start the Ollama server with llama3.2
-    fun startOllamaServer() {
+    private fun startOllamaServer() {
         // Needed otherwise run ollama will lead to Error:
         // Head "http://127.0.0.1:11434/": dial tcp 127.0.0.1:11434: connectex: Connection refused
         Thread {
-            var command = listOf(COMMAND, "pull", TranslationGPT.MODEL)
-            runCommand(command)?.let { logger.info(it) }
-            command = listOf(COMMAND, "pull", MODEL)
-            runCommand(command)?.let { logger.info(it) }
-            command = listOf(COMMAND, "serve")
+            // Start ollama
+            var command = listOf(COMMAND, "serve")
             runCommand(command)?.let { logger.info(it) }
         }.start()
-        // TODO: Running this the first time might lead to timeout..
-        // Get test response so "ps" will show an active instance.
+
+        /*Thread {
+            // Get/update image and run
+            var command = listOf(COMMAND, "pull", MODEL)
+            runCommand(command)?.let { logger.info(it) }
+            command = listOf(COMMAND, "run", MODEL)
+            runCommand(command)?.let { logger.info(it) }
+        }.start()*/
+
+        Thread {
+            // Get/update image and run
+            var command = listOf(COMMAND, "pull", TranslationGPT.MODEL)
+            runCommand(command)?.let { logger.info(it) }
+            command = listOf(COMMAND, "run", TranslationGPT.MODEL)
+            runCommand(command)?.let { logger.info(it) }
+        }.start()
+
         GenerativeService(API_URL, MODEL).generateStoryIndependentStuff("Answer to test", Settings.DEFAULT_LANGUAGE)
     }
 

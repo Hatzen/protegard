@@ -8,6 +8,7 @@ import java.time.Duration
 class TranslationService {
 
     val assistant: TranslationModelCommunication
+    val languageModel = connectModelProcedural(modelUrl, modelName)
 
     constructor(modelUrl: String, modelName: String) {
         val languageModel = connectModelProcedural(modelUrl, modelName)
@@ -21,16 +22,21 @@ class TranslationService {
             .baseUrl(modelUrl)
             .modelName(modelName)
             .timeout(Duration.ofSeconds(1000))
+            .temperature(0.1)
+            /*
             // 0.3 be more determistic dont fantasise
             .temperature(0.3)
             // Allow to repeat the same words again and again
-            .repeatPenalty(0.0)
+            .repeatPenalty(0.0)*/
             .build()
     }
 
     fun translate(message: String, languageTo: String, languageFrom: String): String {
         logRequest("translate", message)
-        return assistant.translateTextToLanguage(message, languageTo, languageFrom)
+        /*val text = " Translate \"$message\" from $languageFrom to $languageTo"
+        languageModel.generate(message.toString(), handler)*/
+
+        return assistant.translateTextToLanguage(message)
     }
 
     private fun logRequest(name: String, message: String) {

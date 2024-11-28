@@ -3,6 +3,7 @@ package de.hartz.software.protegard.view.text
 import java.util.concurrent.LinkedBlockingQueue
 import kotlin.concurrent.thread
 
+// TODO: Enter a command> currently comes before the last output.
 class RealTimePrinter(private val delayMillis: Long = 10L) {
     private val messageQueue = LinkedBlockingQueue<String>()
     private val workerThread: Thread

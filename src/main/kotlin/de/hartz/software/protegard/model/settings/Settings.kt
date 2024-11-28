@@ -6,7 +6,8 @@ object Settings {
 
     var useLLMs = true
 
-    var useEffectsAndUi = true
-    var translate = true
+    // Turn off for testing to get texts instantly.
+    var useEffectsAndUi = false // TODO: currently Enter> is lead by text.
+    var translate = true // TODO the translationmodel just prompts random shit. single prompt show useful stuff.
     var language: String = DEFAULT_LANGUAGE
 }
