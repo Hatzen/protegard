@@ -8,10 +8,10 @@ import java.time.Duration
 class TranslationService {
 
     val assistant: TranslationModelCommunication
-    val languageModel = connectModelProcedural(modelUrl, modelName)
+    val languageModel: OllamaChatModel
 
     constructor(modelUrl: String, modelName: String) {
-        val languageModel = connectModelProcedural(modelUrl, modelName)
+        languageModel = connectModelProcedural(modelUrl, modelName)
         this.assistant = AiServices.builder(TranslationModelCommunication::class.java)
             .chatLanguageModel(languageModel)
             .build()
