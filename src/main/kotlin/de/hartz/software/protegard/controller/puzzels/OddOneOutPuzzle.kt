@@ -1,4 +1,4 @@
-package controller.puzzels
+package de.hartz.software.protegard.controller.puzzels
 
 import kotlin.random.Random
 
@@ -6,8 +6,8 @@ class OddOneOutPuzzle {
     private val categories = mapOf(
         "Vikings" to listOf("Thor", "Odin", "Loki", "Freyja", "Ragnar"),
         "Science" to listOf("Newton", "Galileo", "Kepler", "Darwin", "Lavoisier"),
-        "Aliens" to listOf("Martian", "Canal", "Meteor", "Star", "Planet"),
-        "Sky" to listOf("Cloud", "Star", "Sun", "Moon", "Comet"),
+        "Aliens" to listOf("Martian", "Visitor", "Meteor", "Star", "Planet"),
+        "Sky" to listOf("Cloud", "Rain", "Storm", "Hail", "Snow"),
         "Chemistry" to listOf("Hydrogen", "Oxygen", "Nitrogen", "Sulfur", "Iron"),
         "Philosophy" to listOf("Plato", "Socrates", "Aristotle", "Descartes", "Kant"),
         "Physics" to listOf("Ether", "Light", "Heat", "Gravity", "Magnetism"),
@@ -15,18 +15,17 @@ class OddOneOutPuzzle {
         "Informatics" to listOf("Abacus", "Algorithm", "Cipher", "Telegraph", "Calculator")
     )
 
-    private val oddElements = listOf("Zeus", "Volcano", "Steamship", "Pyramid", "Chariot")
-
     fun startGame(onCorrectAnswer: (setNumber: Int, elements: List<String>, oddOneOut: String) -> Unit) {
         repeat(10) { setNumber ->
             val category = categories.entries.random()
             val elements = category.value.toMutableList()
-            val oddOneOut = oddElements.random()
 
             // Ensure the odd element is not part of the category
-            while (elements.contains(oddOneOut)) {
+            var oddOneOut: String
+            do {
+                oddOneOut = categories.entries.random().value.random()
                 elements.shuffle()
-            }
+            } while (elements.contains(oddOneOut))
 
             // Insert the odd element at a random position
             elements.add(Random.nextInt(elements.size), oddOneOut)

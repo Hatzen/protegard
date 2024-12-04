@@ -1,4 +1,4 @@
-package controller.puzzels
+package de.hartz.software.protegard.controller.puzzels
 
 class RiverCrossingPuzzle {
     private val leftBank = mutableListOf("Friendly Alien", "Evil Alien", "Human", "Disease")

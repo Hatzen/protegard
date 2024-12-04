@@ -1,13 +1,12 @@
-package controller.puzzels
+package de.hartz.software.protegard.controller.puzzels
 
-/*
+
 fun main() {
     println("Enter the side length of the sliding puzzle:")
     val sideLength = readlnOrNull()?.toIntOrNull() ?: return
-    val puzzle = SlidingPuzzle(sideLength)
+    val puzzle = TextBasedSlidingPuzzle(sideLength)
     puzzle.play()
 }
- */
 
 class TextBasedSlidingPuzzle(private val size: Int) {
     private val board: Array<Array<Int>>

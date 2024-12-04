@@ -1,4 +1,4 @@
-package de.hartz.software.protegard.controller.puzzels
+package de.hartz.software.protegard.controller.puzzels.unused.erroneous
 
 class LogicGridPuzzle {
     private val categories = listOf("Characters", "Locations", "Items")

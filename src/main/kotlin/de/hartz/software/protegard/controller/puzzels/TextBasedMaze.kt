@@ -1,17 +1,19 @@
-package controller.puzzels
+package de.hartz.software.protegard.controller.puzzels
 
-import java.util.*
+import de.hartz.software.protegard.controller.IView
+import de.hartz.software.protegard.controller.generative.translation.TranslationGPT
+import de.hartz.software.protegard.model.scenario.Characters
+import de.hartz.software.protegard.model.settings.Settings
+import de.hartz.software.protegard.view.text.TextIO
 import kotlin.random.Random
 
 fun main() {
-    val mazeGame = TextBasedMaze()
+    val mazeGame = TextBasedMaze(TextIO(TranslationGPT(Settings)))
     mazeGame.startGame()
 }
 
 // TODO: Generate random texts indicating the right way with llm. And dieing in the wrong way.
-
-// TODO: Does not work probably..
-class TextBasedMaze(private val size: Int = 5) {
+class TextBasedMaze(private val view: IView, private val size: Int = 5) {
     private val maze = Array(size) { Array(size) { ' ' } }
     private var start = Pair(0, 0)
     private var end = Pair(size - 1, size - 1)
@@ -22,21 +24,19 @@ class TextBasedMaze(private val size: Int = 5) {
     }
 
     fun startGame() {
-        println("Welcome to the Text-Based Maze!")
-        println("You are at position ${currentPosition.first}, ${currentPosition.second}.")
-        println("Type 'up', 'down', 'left', or 'right' to move.")
+        view.addText("You are at position ${currentPosition.first}, ${currentPosition.second}.", Characters.NARRATOR)
+        view.addText("Type 1. up, 2. down, 3. left, or 4. right to move.")
         displayMaze()
 
         while (currentPosition != end) {
-            println("\nCurrent position: $currentPosition")
-            println("Move (up, down, left, right):")
-            val move = readlnOrNull()?.trim()?.lowercase(Locale.getDefault())
+            view.addText("\nCurrent position: $currentPosition")
+            val move = view.getChoice()
 
-            if (move != null && isValidMove(move)) {
+            if (isValidMove(move)) {
                 makeMove(move)
                 displayMaze()
             } else {
-                println("Invalid move. Please try again.")
+                view.addText("Invalid move. Please try again.")
             }
         }
 
@@ -63,40 +63,42 @@ class TextBasedMaze(private val size: Int = 5) {
 
         maze[start.first][start.second] = 'S'  // Start position
         maze[end.first][end.second] = 'E'      // End position
+
+        view.addText("S $start , E $end")
+
         currentPosition = start
     }
 
     private fun displayMaze() {
-        println("\nMaze:")
         // Adjust for proper alignment by specifying a consistent width for each column
         for (i in maze) {
-            println(i.joinToString("  ") { it.toString().padEnd(2) })  // Ensure proper spacing
+            view.addText(i.joinToString("  ") { it.toString().padEnd(2) })  // Ensure proper spacing
         }
     }
 
-    private fun isValidMove(move: String): Boolean {
+    private fun isValidMove(move: Int): Boolean {
         val (x, y) = currentPosition
         return when (move) {
-            "up" -> x > 0 && maze[x - 1][y] != '#'
-            "down" -> x < size - 1 && maze[x + 1][y] != '#'
-            "left" -> y > 0 && maze[x][y - 1] != '#'
-            "right" -> y < size - 1 && maze[x][y + 1] != '#'
+            1 -> x > 0 && maze[x - 1][y] != '#'           // "up"
+            2 -> x < size - 1 && maze[x + 1][y] != '#'    // "down"
+            3 -> y > 0 && maze[x][y - 1] != '#'           // "left"
+            4 -> y < size - 1 && maze[x][y + 1] != '#'    // "right"
             else -> false
         }
     }
 
-    private fun makeMove(move: String) {
+    private fun makeMove(move: Int) {
         val (x, y) = currentPosition
         currentPosition = when (move) {
-            "up" -> Pair(x - 1, y)
-            "down" -> Pair(x + 1, y)
-            "left" -> Pair(x, y - 1)
-            "right" -> Pair(x, y + 1)
+            1 -> Pair(x - 1, y)    // "up"
+            2 -> Pair(x + 1, y)  // "down
+            3 -> Pair(x, y - 1)  // "left
+            4 -> Pair(x, y + 1) // "righ
             else -> currentPosition
         }
     }
 
     private fun onMazeSolved() {
-        println("Congratulations! You've solved the maze!")
+
     }
 }

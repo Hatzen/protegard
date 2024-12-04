@@ -4,6 +4,8 @@ import de.hartz.software.protegard.controller.GameController
 import de.hartz.software.protegard.model.common.Item
 import de.hartz.software.protegard.model.common.RoomObject
 import de.hartz.software.protegard.model.milestones.Milestone
+import de.hartz.software.protegard.model.milestones.Mission
+import de.hartz.software.protegard.model.milestones.MissionStatus
 import de.hartz.software.protegard.model.scenario.Characters
 import de.hartz.software.protegard.model.scenario.items.RareCoin
 
@@ -23,6 +25,7 @@ class MetalTray : RoomObject("Metal Tray") {
                 Characters.NARRATOR
             )
             GameController.nextChapter()
+            Mission.CHAPTER_2_WANDERING_FOREST.missionStatus = MissionStatus.ACTIVATED
         }
     }
 }
